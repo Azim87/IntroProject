@@ -1,5 +1,6 @@
 package com.kubatov.androidthree.ui.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,8 +52,8 @@ public class OnBoardAdapter extends PagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
+        @SuppressLint("InflateParams") View view = LayoutInflater.from(context).inflate(R.layout.item_onboard, null);
 
-        View view = LayoutInflater.from(context).inflate(R.layout.item_onboard, null);
         ButterKnife.bind(this, view);
 
         ViewPager pager = (ViewPager) container;
@@ -70,9 +71,7 @@ public class OnBoardAdapter extends PagerAdapter {
             }
         });
 
-        textSkip.setOnClickListener(v -> {
-            pager.setCurrentItem(getCount() + 1);
-        });
+        textSkip.setOnClickListener(v -> pager.setCurrentItem(getCount() + 1));
 
         container.addView(view, 0);
         return view;
