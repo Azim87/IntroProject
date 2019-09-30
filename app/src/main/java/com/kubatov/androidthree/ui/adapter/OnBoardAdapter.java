@@ -61,8 +61,8 @@ public class OnBoardAdapter extends PagerAdapter {
         textView.setText(models.get(position).getText());
         nextButton.setText(models.get(position).getTextOfButton());
         textSkip.setText(models.get(position).getTextOfskip());
-        nextButton.setOnClickListener(v -> {
 
+        nextButton.setOnClickListener(v -> {
             if (pager.getCurrentItem() == getCount() - 1) {
                 MainActivity.start(context);
             } else {
