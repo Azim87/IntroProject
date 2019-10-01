@@ -62,8 +62,7 @@ public class OnBoardActivity extends AppCompatActivity {
         nextButton.setOnClickListener(v -> {
             if (viewPager.getCurrentItem() == adapter.getCount() - 1) {
                 MainActivity.start(this);
-
-
+                finish();
             } else {
                 viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
             }
