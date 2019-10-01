@@ -2,22 +2,22 @@ package com.kubatov.androidthree.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
+
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.kubatov.androidthree.App;
 import com.kubatov.androidthree.R;
 import com.kubatov.androidthree.ui.adapter.OnBoardAdapter;
 import com.kubatov.androidthree.ui.model.OnBoardModel;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -25,22 +25,18 @@ public class OnBoardActivity extends AppCompatActivity {
 
     @BindView(R.id.main_view_pager)
     ViewPager viewPager;
-
     @BindView(R.id.linear_layout)
     LinearLayout linearLayoutDots;
-
     @BindView(R.id.button_next)
     Button nextButton;
-
     @BindView(R.id.text_view_skip)
     TextView textView;
 
     private ImageView[] mDots;
     private int dotsCount;
 
-    public static void start(Context context){
+    public static void start(Context context) {
         context.startActivity(new Intent(context, OnBoardActivity.class));
-
     }
 
     @Override
@@ -55,27 +51,27 @@ public class OnBoardActivity extends AppCompatActivity {
         modelList.add(new OnBoardModel(R.drawable.delete, "В данном приложении вы можете удалить"));
         modelList.add(new OnBoardModel(R.drawable.thanks, "Спасибо что используете наше приложение"));
 
-        OnBoardAdapter adapter = new OnBoardAdapter(modelList, this );
+        OnBoardAdapter adapter = new OnBoardAdapter(modelList, this);
         viewPager.setAdapter(adapter);
         dotsCount = adapter.getCount();
 
         textView.setOnClickListener(v -> {
-            viewPager.setCurrentItem(3);
+            viewPager.setCurrentItem(3, true);
         });
 
         nextButton.setOnClickListener(v -> {
             if (viewPager.getCurrentItem() == adapter.getCount() - 1) {
                 MainActivity.start(this);
-                finish();
+
 
             } else {
-                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
             }
         });
-
         slideDotes();
     }
 
+    //region ViewPager slide Dots
     private void slideDotes() {
         if (linearLayoutDots != null) {
             linearLayoutDots.removeAllViews();
@@ -110,21 +106,22 @@ public class OnBoardActivity extends AppCompatActivity {
                         case 0:
                         case 1:
                         case 2:
-                            nextButton.setText("Далeе");
-                            textView.setText("Пропустить");
+                            nextButton.setText("Далее");
+                            textView.setText("Пропустить!");
                             break;
                         case 3:
                             nextButton.setText("Начать!");
                             textView.setText("Готово!");
                             break;
                     }
-
                 }
 
                 @Override
                 public void onPageScrollStateChanged(int state) {
+
                 }
             });
         }
     }
+    //endregion
 }

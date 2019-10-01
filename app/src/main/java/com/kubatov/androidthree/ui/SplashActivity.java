@@ -1,6 +1,5 @@
 package com.kubatov.androidthree.ui;
 
-
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;

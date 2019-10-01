@@ -20,7 +20,7 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/main_view_pager"
         android:layout_width="match_parent"
-        android:layout_height="590dp" />
+        android:layout_height="550dp" />
 
     <Button
         android:id="@+id/button_next"
@@ -28,7 +28,7 @@
         android:textColor="#fff"
         android:textAllCaps="false"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:background="#8332A9"
+        android:background="@drawable/btn_next_gradient"
         android:layout_gravity="center"
         android:layout_width="280dp"
         android:layout_height="50dp"/>
