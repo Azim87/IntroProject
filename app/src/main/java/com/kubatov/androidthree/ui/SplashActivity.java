@@ -18,9 +18,11 @@ public class SplashActivity extends AppCompatActivity {
         if (App.getPreferenceHelper().isFirstLaunch()) {
             App.getPreferenceHelper().setFirstLaunch();
             OnBoardActivity.start(this);
+            finish();
 
         } else {
             MainActivity.start(this);
+            finish();
         }
     }
 }

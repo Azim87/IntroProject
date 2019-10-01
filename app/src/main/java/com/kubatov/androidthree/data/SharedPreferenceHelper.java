@@ -17,7 +17,7 @@ public class SharedPreferenceHelper {
     }
 
     public boolean isFirstLaunch(){
-       return preferences.getBoolean(IS_FIRST_LAUNCH, false);
+       return preferences.getBoolean(IS_FIRST_LAUNCH, true);
     }
 
     public void setFirstLaunch(){

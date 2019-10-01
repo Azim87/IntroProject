@@ -20,4 +20,8 @@ public class App extends Application {
     public static  SharedPreferenceHelper getPreferenceHelper() {
         return preferenceHelper;
     }
+
+    public static void setPreferenceHelper(SharedPreferenceHelper preferenceHelper) {
+        App.preferenceHelper = preferenceHelper;
+    }
 }

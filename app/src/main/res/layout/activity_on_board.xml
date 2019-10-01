@@ -7,21 +7,37 @@
     android:layout_height="wrap_content"
     tools:context=".ui.OnBoardActivity">
 
+    <TextView
+        android:layout_marginTop="30dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:layout_gravity="end"
+        android:layout_marginEnd="15dp"
+        android:id="@+id/text_view_skip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Пропустить" />
+
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/main_view_pager"
         android:layout_width="match_parent"
         android:layout_height="590dp" />
 
+    <Button
+        android:id="@+id/button_next"
+        android:text="Далее"
+        android:textColor="#fff"
+        android:textAllCaps="false"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:background="#8332A9"
+        android:layout_gravity="center"
+        android:layout_width="280dp"
+        android:layout_height="50dp"/>
+
     <LinearLayout
         android:id="@+id/linear_layout"
+        android:layout_marginTop="20dp"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="20dp"/>
-
-
-
-
-
-
 </LinearLayout>
