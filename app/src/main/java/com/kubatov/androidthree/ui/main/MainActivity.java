@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
                             if (response.body() != null){
                                 hideProgressBar();
                                 Toast.makeText(MainActivity.this, "Updated", Toast.LENGTH_SHORT).show();
-                                textViewCity.setText("Weather in " + response.body().getName() + ", " + "KG");
+                                textViewCity.setText("Weather in " + response.body().getName() + ", " + response.body().getSys().getCountry());
                                 textViewTemp.setText( response.body().getMain().getTemp().intValue() + " °C");
                                 textViewHumidity.setText(response.body().getMain().getHumidity().toString() + " %");
                                 textViewDescription.setText(response.body().getWeather().get(position).getDescription());
