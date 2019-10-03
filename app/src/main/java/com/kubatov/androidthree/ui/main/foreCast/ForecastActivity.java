@@ -1,6 +1,5 @@
 package com.kubatov.androidthree.ui.main.foreCast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,9 +10,7 @@ import android.util.Log;
 import com.kubatov.androidthree.R;
 import com.kubatov.androidthree.data.model.forecast_model.Forecast;
 import com.kubatov.androidthree.data.network.RetroFitBuilder;
-
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
@@ -49,14 +46,15 @@ public class ForecastActivity extends AppCompatActivity {
     private void getForeCastData(){
         RetroFitBuilder.getService().getForecast("Bishkek", 4,
                 getResources().getString(R.string.api_key), "metric")
-                .enqueue(new Callback<List<Forecast>>() {
+                .enqueue(new Callback<Forecast>() {
                     @Override
-                    public void onResponse(Call<List<Forecast>> call, Response<List<Forecast>> response) {
+                    public void onResponse(Call<Forecast> call, Response<Forecast> response) {
+                        Log.d("ololo", "on response " + response.body().toString());
 
                     }
 
                     @Override
-                    public void onFailure(Call<List<Forecast>> call, Throwable t) {
+                    public void onFailure(Call<Forecast> call, Throwable t) {
                         Log.d("ololo", "on failure " + t.getMessage());
                     }
                 });

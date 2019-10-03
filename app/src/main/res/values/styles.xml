@@ -1,0 +1,64 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="WeatherAppCityStyle">
+        <item name="android:layout_marginTop">30dp</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:textColor">@color/weather_city_color</item>
+        <item name="android:text">@string/city</item>
+    </style>
+
+    <style name="WeatherAppTempStyle">
+        <item name="android:layout_marginTop">30dp</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:textSize">50sp</item>
+        <item name="android:textColor">@color/weather_temp_color</item>
+        <item name="android:text">@string/temp</item>
+    </style>
+
+    <style name="WeatherAppDescriptionStyle">
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:textSize">35sp</item>
+        <item name="android:textColor">@color/weather_desc_color</item>
+        <item name="android:text">@string/description</item>
+    </style>
+
+    <style name="WeatherAppHumidityStyle">
+        <item name="android:textSize">35sp</item>
+        <item name="android:textColor">@color/weather_desc_color</item>
+        <item name="android:text">@string/humidity</item>
+    </style>
+
+    <style name="WeatherAppRefreshButtonStyle">
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginLeft">30dp</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_marginBottom">30dp</item>
+        <item name="android:background">@color/cardview_dark_background</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/cardview_light_background</item>
+        <item name="android:text">@string/refreshButton</item>
+    </style>
+
+    <style name="ColorOfText">
+        <item name="android:textColor">#fff</item>
+    </style>
+
+
+
+
+    <style name="ProgressWeather" parent="Widget.AppCompat.ProgressBar">
+        <item name="android:layout_centerHorizontal">true</item>
+
+    </style>
+
+</resources>

@@ -3,8 +3,6 @@ package com.kubatov.androidthree.data.network;
 import com.kubatov.androidthree.data.model.current_weather.CurrentWeather;
 import com.kubatov.androidthree.data.model.forecast_model.Forecast;
 
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -19,7 +17,7 @@ public interface RetroFitService {
         );
 
         @GET("forecast")
-        Call<List<Forecast>> getForecast(
+        Call<Forecast> getForecast(
                 @Query("q") String city,
                 @Query("cnt") int days,
                 @Query("APPID") String key,
