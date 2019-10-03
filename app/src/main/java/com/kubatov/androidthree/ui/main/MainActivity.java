@@ -6,7 +6,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -14,8 +13,7 @@ import android.widget.Toast;
 import com.kubatov.androidthree.R;
 import com.kubatov.androidthree.data.model.current_weather.CurrentWeather;
 import com.kubatov.androidthree.data.network.RetroFitBuilder;
-
-import java.util.Date;
+import com.kubatov.androidthree.ui.main.foreCast.ForecastActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -71,21 +69,6 @@ public class MainActivity extends AppCompatActivity {
                                textViewTemp.setText( response.body().getMain().getTemp().intValue() + " °C");
                                textViewHumidity.setText(response.body().getMain().getHumidity().toString() + " %");
                                textViewDescription.setText(response.body().getWeather().get(position).getDescription());
-
-                               Log.d("ololo", "clouds " + response.body().getClouds().getAll().toString());
-                               Log.d("ololo", "clouds " + response.body().getDt());
-                               Log.d("ololo", "clouds " + response.body().getBase());
-                               Log.d("ololo", "clouds " + response.body().getSys().getCountry());
-                               Log.d("ololo", "clouds " + response.body().getCoord().getLat());
-                               Log.d("ololo", "clouds " + response.body().getCoord().getLon());
-                               Log.d("ololo", "clouds " + response.body().getSys().getMessage().toString());
-
-                               int sunrise =  response.body().getSys().getSunrise();
-                               Date date = new Date(sunrise);
-
-                               Log.d("ololo", "sunrise " + date);
-
-
 
                            }else {
                                Toast.makeText(MainActivity.this, "The body is empty", Toast.LENGTH_SHORT).show();
@@ -146,4 +129,8 @@ public class MainActivity extends AppCompatActivity {
         weatherProgress.setVisibility(View.GONE);
     }
     //endregion
+
+    public void onForecastClick(View view) {
+       ForecastActivity.start(this);
+    }
 }

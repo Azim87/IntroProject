@@ -9,6 +9,16 @@
     tools:context=".ui.main.MainActivity">
 
     <TextView
+        android:id="@+id/forecast_weather"
+        android:text="16 days forecast"
+        android:textColor="@color/cardview_light_background"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onForecastClick"/>
+
+    <TextView
         style="@style/WeatherAppCityStyle"
         android:id="@+id/text_view_city"
         android:layout_width="wrap_content"

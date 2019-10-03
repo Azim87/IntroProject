@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">AndroidThree</string>
+    <string name="intro_name_1">В данном приложении вы можете учиться</string>
+    <string name="intro_name_2">В данном приложении вы можете обновить</string>
+    <string name="intro_name_3">В данном приложении вы можете удалять</string>
+    <string name="intro_name_4">Спасибо что используете наше приложение</string>
+    <string name="api_key">3d7f3a013385dd16698d41c70a420d91</string>
+
+    <string name="temp">10°C</string>
+    <string name="description">Description</string>
+    <string name="humidity">Humidity</string>
+    <string name="city">Weather in</string>
+    <string name="refreshButton">Refresh</string>
 </resources>
