@@ -8,7 +8,7 @@
     <color name="selected">#0E23E6</color>
 
 
-    <color name="weather_city_color">#283593</color>
-    <color name="weather_temp_color">#FF8F00</color>
-    <color name="weather_sky_color">#161618</color>
+    <color name="weather_city_color">#EB1717</color>
+    <color name="weather_temp_color">#4527A0</color>
+    <color name="weather_desc_color">#FFFFFF</color>
 </resources>

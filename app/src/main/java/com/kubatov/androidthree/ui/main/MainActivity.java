@@ -6,14 +6,17 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.kubatov.androidthree.R;
 import com.kubatov.androidthree.data.model.current_weather.CurrentWeather;
 import com.kubatov.androidthree.data.network.RetroFitBuilder;
+
+import java.util.Date;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
@@ -22,6 +25,7 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     private int position = 0;
+
     //region InitViews
     @BindView(R.id.text_view_city)
     TextView textViewCity;
@@ -38,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.progress_load_bar)
     ProgressBar weatherProgress;
     //endregion
-
    public static void start(Context context){
        context.startActivity(new Intent(context, MainActivity.class));
    }
@@ -62,19 +65,43 @@ public class MainActivity extends AppCompatActivity {
                    @SuppressLint("SetTextI18n")
                    @Override
                    public void onResponse(@Nullable Call<CurrentWeather> call, @Nullable Response<CurrentWeather> response) {
-                       assert response.body() != null;
-                       textViewCity.setText("Weather in " + response.body().getName() + ", " + "KG");
-                       textViewTemp.setText( response.body().getMain().getTemp().intValue() + " °C");
-                       textViewHumidity.setText("Humidity: " + response.body().getMain().getHumidity().toString() + " %");
-                       textViewDescription.setText(response.body().getWeather().get(position).getDescription());
+                       if (response.isSuccessful()){
+                           if (response.body() != null){
+                               textViewCity.setText("Weather in " + response.body().getName() + ", " + "KG");
+                               textViewTemp.setText( response.body().getMain().getTemp().intValue() + " °C");
+                               textViewHumidity.setText(response.body().getMain().getHumidity().toString() + " %");
+                               textViewDescription.setText(response.body().getWeather().get(position).getDescription());
+
+                               Log.d("ololo", "clouds " + response.body().getClouds().getAll().toString());
+                               Log.d("ololo", "clouds " + response.body().getDt());
+                               Log.d("ololo", "clouds " + response.body().getBase());
+                               Log.d("ololo", "clouds " + response.body().getSys().getCountry());
+                               Log.d("ololo", "clouds " + response.body().getCoord().getLat());
+                               Log.d("ololo", "clouds " + response.body().getCoord().getLon());
+                               Log.d("ololo", "clouds " + response.body().getSys().getMessage().toString());
+
+                               int sunrise =  response.body().getSys().getSunrise();
+                               Date date = new Date(sunrise);
+
+                               Log.d("ololo", "sunrise " + date);
+
+
+
+                           }else {
+                               Toast.makeText(MainActivity.this, "The body is empty", Toast.LENGTH_SHORT).show();
+                           }
+                       }else {
+                           Toast.makeText(MainActivity.this, "Request error" + response.code(),  Toast.LENGTH_SHORT).show();
+                       }
                    }
                    @Override
                    public void onFailure(@Nullable Call<CurrentWeather> call, Throwable t) {
+                       Toast.makeText(MainActivity.this, "Error" + t.getMessage(), Toast.LENGTH_SHORT).show();
                    }
                });
-
     }
     //endregion
+
     //region RefreshWeather
     public void onRefreshClick(View view) {
        showProgressBar();
@@ -87,22 +114,29 @@ public class MainActivity extends AppCompatActivity {
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void onResponse(@Nullable Call<CurrentWeather> call, @Nullable Response<CurrentWeather> response) {
-                        if (response != null) {
-                            hideProgressBar();
-                            Toast.makeText(MainActivity.this, "updated", Toast.LENGTH_SHORT).show();
-                            assert response.body() != null;
-                            textViewCity.setText("Weather in " + response.body().getName() + ", " + "KG");
-                            textViewTemp.setText(response.body().getMain().getTemp().intValue() + " °C");
-                            textViewHumidity.setText("Humidity: " + response.body().getMain().getHumidity().toString() + " %");
-                            textViewDescription.setText(response.body().getWeather().get(position).getDescription());
+                        if (response.isSuccessful()){
+                            if (response.body() != null){
+                                hideProgressBar();
+                                Toast.makeText(MainActivity.this, "Updated", Toast.LENGTH_SHORT).show();
+                                textViewCity.setText("Weather in " + response.body().getName() + ", " + "KG");
+                                textViewTemp.setText( response.body().getMain().getTemp().intValue() + " °C");
+                                textViewHumidity.setText(response.body().getMain().getHumidity().toString() + " %");
+                                textViewDescription.setText(response.body().getWeather().get(position).getDescription());
+                            }else {
+                                Toast.makeText(MainActivity.this, "The body is empty", Toast.LENGTH_SHORT).show();
+                            }
+                        }else {
+                            Toast.makeText(MainActivity.this, "Request error" + response.code(),  Toast.LENGTH_SHORT).show();
                         }
                     }
                     @Override
                     public void onFailure(@Nullable Call<CurrentWeather> call, Throwable t) {
+                        Toast.makeText(MainActivity.this, "Error" + t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
     //endregion
+
     //region ProgressBar
     private void showProgressBar(){
         weatherProgress.setVisibility(View.VISIBLE);

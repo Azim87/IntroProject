@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@drawable/weather"
     tools:context=".ui.main.MainActivity">
 
     <TextView
@@ -19,19 +21,42 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
-    <TextView
-        style="@style/WeatherAppDescriptionStyle"
-        android:id="@+id/text_view_description"
+    <LinearLayout
+        android:id="@+id/linear_layout"
+        android:orientation="vertical"
         android:layout_below="@+id/text_view_temp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        style="@style/WeatherAppHumidityStyle"
-        android:id="@+id/text_view_humidity"
-        android:layout_below="@+id/text_view_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <TextView
+            style="@style/ColorOfText"
+            android:text="@string/description"
+            android:layout_marginTop="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/WeatherAppDescriptionStyle"
+            android:id="@+id/text_view_description"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/ColorOfText"
+            android:id="@+id/humidity"
+            android:text="@string/humidity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/WeatherAppHumidityStyle"
+            android:layout_gravity="center"
+            android:id="@+id/text_view_humidity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
 
     <ProgressBar
         style="@style/Widget.AppCompat.ProgressBar"
