@@ -1,23 +1,19 @@
-package com.kubatov.androidthree.ui;
+package com.kubatov.androidthree.ui.onboard;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
+import android.widget.LinearLayout;
 import com.kubatov.androidthree.R;
-import com.kubatov.androidthree.ui.adapter.OnBoardAdapter;
-import com.kubatov.androidthree.ui.model.OnBoardModel;
-
-import java.util.ArrayList;
+import com.kubatov.androidthree.ui.main.MainActivity;
+import com.kubatov.androidthree.data.model.OnBoardModel;
 import java.util.List;
-
+import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -25,10 +21,13 @@ public class OnBoardActivity extends AppCompatActivity {
 
     @BindView(R.id.main_view_pager)
     ViewPager viewPager;
+
     @BindView(R.id.linear_layout)
     LinearLayout linearLayoutDots;
+
     @BindView(R.id.button_next)
     Button nextButton;
+
     @BindView(R.id.text_view_skip)
     TextView textView;
 
@@ -45,13 +44,12 @@ public class OnBoardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_on_board);
         ButterKnife.bind(this);
 
-        List<OnBoardModel> modelList = new ArrayList<>();
-        modelList.add(new OnBoardModel(R.drawable.study_256, "В данном приложении вы можете учиться"));
-        modelList.add(new OnBoardModel(R.drawable.update, "В данном приложении вы можете обновить"));
-        modelList.add(new OnBoardModel(R.drawable.delete, "В данном приложении вы можете удалить"));
-        modelList.add(new OnBoardModel(R.drawable.thanks, "Спасибо что используете наше приложение"));
+        setViewPager();
+    }
 
-        OnBoardAdapter adapter = new OnBoardAdapter(modelList, this);
+    //region ViewPager
+    private void setViewPager() {
+        OnBoardAdapter adapter = new OnBoardAdapter(getData());
         viewPager.setAdapter(adapter);
         dotsCount = adapter.getCount();
 
@@ -69,6 +67,16 @@ public class OnBoardActivity extends AppCompatActivity {
         });
         slideDotes();
     }
+
+    private List<OnBoardModel> getData(){
+        List<OnBoardModel> modelList = new ArrayList<>();
+        modelList.add(new OnBoardModel(R.drawable.study, R.string.intro_name_1));
+        modelList.add(new OnBoardModel(R.drawable.update, R.string.intro_name_2));
+        modelList.add(new OnBoardModel(R.drawable.delete, R.string.intro_name_3));
+        modelList.add(new OnBoardModel(R.drawable.thanks, R.string.intro_name_4));
+        return modelList;
+    }
+    //endregion
 
     //region ViewPager slide Dots
     private void slideDotes() {
@@ -106,15 +114,14 @@ public class OnBoardActivity extends AppCompatActivity {
                         case 1:
                         case 2:
                             nextButton.setText("Далее");
-                            textView.setText("Пропустить!");
+                            textView.setText("Пропустить");
                             break;
                         case 3:
-                            nextButton.setText("Начать!");
-                            textView.setText("Готово!");
+                            nextButton.setText("Начать");
+                            textView.setText("Готово");
                             break;
                     }
                 }
-
                 @Override
                 public void onPageScrollStateChanged(int state) {
 

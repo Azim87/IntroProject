@@ -1,21 +1,18 @@
-package com.kubatov.androidthree.ui.adapter;
+package com.kubatov.androidthree.ui.onboard;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 
 import com.kubatov.androidthree.R;
-import com.kubatov.androidthree.ui.MainActivity;
-import com.kubatov.androidthree.ui.model.OnBoardModel;
+import com.kubatov.androidthree.data.model.OnBoardModel;
 
 import java.util.List;
 
@@ -31,9 +28,8 @@ public class OnBoardAdapter extends PagerAdapter {
     private List<OnBoardModel> models;
     private Context context;
 
-    public OnBoardAdapter(List<OnBoardModel> models, Context context) {
+    public OnBoardAdapter(List<OnBoardModel> models) {
         this.models = models;
-        this.context = context;
     }
 
     @Override
@@ -49,6 +45,7 @@ public class OnBoardAdapter extends PagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
+        context = container.getContext();
         @SuppressLint("InflateParams") View view = LayoutInflater.from(context).inflate(R.layout.item_onboard, null);
 
         ButterKnife.bind(this, view);

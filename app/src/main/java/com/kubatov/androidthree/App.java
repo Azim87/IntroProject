@@ -2,7 +2,7 @@ package com.kubatov.androidthree;
 
 import android.app.Application;
 
-import com.kubatov.androidthree.data.SharedPreferenceHelper;
+import com.kubatov.androidthree.data.preference.SharedPreferenceHelper;
 
 public class App extends Application {
     private static SharedPreferenceHelper preferenceHelper;

@@ -1,4 +1,4 @@
-package com.kubatov.androidthree.data;
+package com.kubatov.androidthree.data.preference;
 
 import android.content.Context;
 import android.content.SharedPreferences;

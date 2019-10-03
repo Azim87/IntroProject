@@ -1,9 +1,11 @@
-package com.kubatov.androidthree.ui;
+package com.kubatov.androidthree.ui.splash;
 
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.kubatov.androidthree.App;
+import com.kubatov.androidthree.ui.main.MainActivity;
+import com.kubatov.androidthree.ui.onboard.OnBoardActivity;
 
 public class SplashActivity extends AppCompatActivity {
 

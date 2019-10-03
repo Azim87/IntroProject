@@ -6,4 +6,9 @@
 
     <color name="not_selected">#0FF3AB</color>
     <color name="selected">#0E23E6</color>
+
+
+    <color name="weather_city_color">#283593</color>
+    <color name="weather_temp_color">#FF8F00</color>
+    <color name="weather_sky_color">#161618</color>
 </resources>

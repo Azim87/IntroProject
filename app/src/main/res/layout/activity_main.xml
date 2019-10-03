@@ -1,18 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MainActivity">
+    tools:context=".ui.main.MainActivity">
 
     <TextView
+        style="@style/WeatherAppCityStyle"
+        android:id="@+id/text_view_city"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="wrap_content"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        style="@style/WeatherAppTempStyle"
+        android:id="@+id/text_view_temp"
+        android:layout_below="@+id/text_view_city"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        style="@style/WeatherAppDescriptionStyle"
+        android:id="@+id/text_view_description"
+        android:layout_below="@+id/text_view_temp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        style="@style/WeatherAppHumidityStyle"
+        android:id="@+id/text_view_humidity"
+        android:layout_below="@+id/text_view_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <ProgressBar
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:id="@+id/progress_load_bar"
+        android:visibility="invisible"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/refresh_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        style="@style/WeatherAppRefreshButtonStyle"
+        android:id="@+id/refresh_button"
+        android:onClick="onRefreshClick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>
