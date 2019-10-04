@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                                        .into(weatherImageView);
 
                                textViewCity.setText("Weathers in " + response.body().getName() + ", " + "KG");
-                               textViewTemp.setText( response.body().getMain().getTemp().intValue() + " °C");
+                               textViewTemp.setText( response.body().getMain().getTemp().intValue() + "°C");
                                textViewHumidity.setText(response.body().getMain().getHumidity().toString() + " %");
                                textViewDescription.setText(response.body().getWeather().get(position).getMain());
 

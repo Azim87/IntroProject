@@ -1,6 +1,6 @@
 package com.kubatov.androidthree.ui.main.foreCast;
 
-import android.util.Log;
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,21 +9,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.kubatov.androidthree.R;
 import com.kubatov.androidthree.data.model.forecast_model.Forecast;
-
+import com.kubatov.androidthree.util.DateUtil;
 import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ForeCastAdapter extends RecyclerView.Adapter<ForeCastAdapter.ForeCastViewHolder> {
-
     private ArrayList<Forecast> list;
 
-
-    public ForeCastAdapter(ArrayList<Forecast> list) {
+     ForeCastAdapter(ArrayList<Forecast> list) {
         this.list = list;
-        notifyDataSetChanged();
     }
 
     @NonNull
@@ -33,14 +28,15 @@ public class ForeCastAdapter extends RecyclerView.Adapter<ForeCastAdapter.ForeCa
         return new ForeCastViewHolder(rootView);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ForeCastViewHolder holder, int position) {
 
-        Log.d("ololo", " adapter " + list.get(0).getList().get(0).main.getTempMax().intValue());
-
-
-        holder.tempTextView.setText(list.get(0).getCity().getName());
-
+        holder.tempTextView.setText("Today" + "\n"
+                + DateUtil.convertUnixToDate(list.get(0).getList().get(0).dt) + "\n"
+                + list.get(0).getList().get(0).weather.get(0).getDescription() + "\n"
+                + list.get(0).getList().get(0).main.getTempMin().intValue()+ "°C" + "/"
+                + list.get(0).getList().get(0).main.getTempMax().intValue()+ "°C");
     }
 
     @Override
@@ -48,7 +44,7 @@ public class ForeCastAdapter extends RecyclerView.Adapter<ForeCastAdapter.ForeCa
         return list.size();
     }
 
-    public class ForeCastViewHolder extends RecyclerView.ViewHolder {
+    class ForeCastViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.temp)
         TextView tempTextView;
 

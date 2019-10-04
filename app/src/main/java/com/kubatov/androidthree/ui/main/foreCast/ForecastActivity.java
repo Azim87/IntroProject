@@ -79,15 +79,11 @@ public class ForecastActivity extends AppCompatActivity {
                                 response.body().getList()));
                         adapter.notifyDataSetChanged();
 
-                        Log.d("ololo", "body " + response.body().getCod());
+                        /*Log.d("ololo", "body " + response.body().getCod());
                         Log.d("ololo", "body " + response.body().getMessage());
                         Log.d("ololo", "body " + response.body().getCity().getName());
                         Log.d("ololo", "body " + response.body().getCnt());
-                        Log.d("ololo", "body " + response.body().getList().get(0).main.getTempMax().intValue());
-
-
-
-
+                        Log.d("ololo", "body " + response.body().getList().get(0).main.getTempMax().intValue());*/
 
                     } else {
                         Toast.makeText(ForecastActivity.this, "The body is empty", Toast.LENGTH_SHORT).show();
