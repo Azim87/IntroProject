@@ -8,68 +8,68 @@ public class Temp {
 
     @SerializedName("day")
     @Expose
-    private Float day;
+    private Double day;
     @SerializedName("min")
     @Expose
-    private Float min;
+    private Double min;
     @SerializedName("max")
     @Expose
-    private Float max;
+    private Double max;
     @SerializedName("night")
     @Expose
-    private Float night;
+    private Double night;
     @SerializedName("eve")
     @Expose
-    private Float eve;
+    private Double eve;
     @SerializedName("morn")
     @Expose
-    private Float morn;
+    private Double morn;
 
-    public Float getDay() {
+    public Double getDay() {
         return day;
     }
 
-    public void setDay(Float day) {
+    public void setDay(Double day) {
         this.day = day;
     }
 
-    public Float getMin() {
+    public Double getMin() {
         return min;
     }
 
-    public void setMin(Float min) {
+    public void setMin(Double min) {
         this.min = min;
     }
 
-    public Float getMax() {
+    public Double getMax() {
         return max;
     }
 
-    public void setMax(Float max) {
+    public void setMax(Double max) {
         this.max = max;
     }
 
-    public Float getNight() {
+    public Double getNight() {
         return night;
     }
 
-    public void setNight(Float night) {
+    public void setNight(Double night) {
         this.night = night;
     }
 
-    public Float getEve() {
+    public Double getEve() {
         return eve;
     }
 
-    public void setEve(Float eve) {
+    public void setEve(Double eve) {
         this.eve = eve;
     }
 
-    public Float getMorn() {
+    public Double getMorn() {
         return morn;
     }
 
-    public void setMorn(Float morn) {
+    public void setMorn(Double morn) {
         this.morn = morn;
     }
 

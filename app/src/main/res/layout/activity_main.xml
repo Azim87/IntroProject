@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:background="@drawable/weather"
+    android:background="@drawable/nature"
     tools:context=".ui.main.MainActivity">
+
+    <ImageView
+        android:id="@+id/weather_image"
+        android:layout_marginTop="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_view_city"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:id="@+id/forecast_weather"
@@ -16,20 +23,20 @@
         android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="onForecastClick"/>
+        android:onClick="onForecastClick" />
 
     <TextView
         style="@style/WeatherAppCityStyle"
         android:id="@+id/text_view_city"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
     <TextView
         style="@style/WeatherAppTempStyle"
         android:id="@+id/text_view_temp"
-        android:layout_below="@+id/text_view_city"
+        android:layout_below="@+id/weather_image"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:id="@+id/linear_layout"
@@ -39,32 +46,26 @@
         android:layout_height="wrap_content">
 
         <TextView
-            style="@style/ColorOfText"
-            android:text="@string/description"
-            android:layout_marginTop="30dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <TextView
             style="@style/WeatherAppDescriptionStyle"
             android:id="@+id/text_view_description"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
         <TextView
-            style="@style/ColorOfText"
             android:id="@+id/humidity"
-            android:text="@string/humidity"
+            style="@style/ColorOfText"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="@string/humidity" />
 
         <TextView
-            style="@style/WeatherAppHumidityStyle"
-            android:layout_gravity="center"
             android:id="@+id/text_view_humidity"
+            style="@style/WeatherAppHumidityStyle"
+            android:layout_gravity="center|center_horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
+
 
     </LinearLayout>
 
@@ -75,13 +76,14 @@
         android:layout_centerHorizontal="true"
         android:layout_above="@+id/refresh_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
     <Button
         style="@style/WeatherAppRefreshButtonStyle"
         android:id="@+id/refresh_button"
+        android:background="@drawable/btn_next_gradient"
         android:onClick="onRefreshClick"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>

@@ -9,6 +9,6 @@
 
 
     <color name="weather_city_color">#EB1717</color>
-    <color name="weather_temp_color">#4527A0</color>
+    <color name="weather_temp_color">#F8F406</color>
     <color name="weather_desc_color">#FFFFFF</color>
 </resources>

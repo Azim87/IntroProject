@@ -17,9 +17,9 @@
     </style>
 
     <style name="WeatherAppTempStyle">
-        <item name="android:layout_marginTop">30dp</item>
+        <item name="android:layout_marginTop">10dp</item>
         <item name="android:layout_centerHorizontal">true</item>
-        <item name="android:textSize">50sp</item>
+        <item name="android:textSize">90sp</item>
         <item name="android:textColor">@color/weather_temp_color</item>
         <item name="android:text">@string/temp</item>
     </style>
@@ -51,10 +51,9 @@
 
     <style name="ColorOfText">
         <item name="android:textColor">#fff</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_marginTop">15dp</item>
     </style>
-
-
-
 
     <style name="ProgressWeather" parent="Widget.AppCompat.ProgressBar">
         <item name="android:layout_centerHorizontal">true</item>

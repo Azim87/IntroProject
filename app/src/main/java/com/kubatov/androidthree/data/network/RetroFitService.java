@@ -19,9 +19,9 @@ public interface RetroFitService {
         @GET("forecast")
         Call<Forecast> getForecast(
                 @Query("q") String city,
-                @Query("cnt") int days,
                 @Query("APPID") String key,
                 @Query("units") String unit
+
         );
 
 }

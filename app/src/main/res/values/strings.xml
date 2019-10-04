@@ -8,7 +8,7 @@
 
     <string name="temp">10°C</string>
     <string name="description">Description</string>
-    <string name="humidity">Humidity</string>
+    <string name="humidity">Humidity:</string>
     <string name="city">Weather in</string>
     <string name="refreshButton">Refresh</string>
 </resources>
