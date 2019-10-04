@@ -79,13 +79,6 @@ public class ForecastActivity extends AppCompatActivity {
                                 response.body().getList()));
                         adapter.notifyDataSetChanged();
 
-                        /*forecast = new Forecast(
-                                response.body().getCod(),
-                                response.body().getMessage(),
-                                response.body().getCity(),
-                                response.body().getCnt(),
-                                response.body().getList()
-                        );*/
                         Log.d("ololo", "body " + response.body().getCod());
                         Log.d("ololo", "body " + response.body().getMessage());
                         Log.d("ololo", "body " + response.body().getCity().getName());
