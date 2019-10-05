@@ -6,15 +6,17 @@ import android.content.Context;
 import com.kubatov.androidthree.data.preference.SharedPreferenceHelper;
 
 public class App extends Application {
-
-    public static Context context;
     private static SharedPreferenceHelper preferenceHelper;
+    public static Context context;
+
+
+
 
     @Override
     public void onCreate() {
         super.onCreate();
-        context = getApplicationContext();
         preferenceHelper = new SharedPreferenceHelper(this);
+        context = getApplicationContext();
 
     }
 

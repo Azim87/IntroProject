@@ -4,28 +4,20 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Toast;
-
 import com.kubatov.androidthree.R;
 import com.kubatov.androidthree.data.model.forecast_model.Forecast;
 import com.kubatov.androidthree.data.network.RetroFitBuilder;
-import com.kubatov.androidthree.ui.main.MainActivity;
 import com.kubatov.androidthree.util.Toaster;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 import static com.kubatov.androidthree.ui.main.MainActivity.CITY;
 import static com.kubatov.androidthree.ui.main.MainActivity.METRIC;
 
@@ -80,7 +72,7 @@ public class ForecastActivity extends AppCompatActivity {
                         adapter.notifyDataSetChanged();
 
                     } else {
-                        Toaster.shortMessage("The body is empty");
+                        Toaster.shortMessage( "The body is empty");
                     }
                 } else {
                     Toaster.shortMessage("Request error"); } }
