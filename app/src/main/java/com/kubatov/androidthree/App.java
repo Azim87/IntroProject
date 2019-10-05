@@ -9,9 +9,6 @@ public class App extends Application {
     private static SharedPreferenceHelper preferenceHelper;
     public static Context context;
 
-
-
-
     @Override
     public void onCreate() {
         super.onCreate();
