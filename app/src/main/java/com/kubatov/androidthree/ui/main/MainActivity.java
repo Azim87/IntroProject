@@ -6,8 +6,11 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -19,6 +22,8 @@ import com.kubatov.androidthree.R;
 import com.kubatov.androidthree.data.model.current_weather.CurrentWeather;
 import com.kubatov.androidthree.data.network.RetroFitBuilder;
 import com.kubatov.androidthree.ui.main.foreCast.ForecastActivity;
+import com.kubatov.androidthree.util.Toaster;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
@@ -26,7 +31,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
+    public static final String CITY = "Bishkek";
+    public static final String METRIC = "metric";
     private int position = 0;
+    private String country;
 
     //region InitViews
     @BindView(R.id.text_view_city)
@@ -47,6 +55,11 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.weather_image)
     ImageView weatherImageView;
 
+    @BindView(R.id.edit_text_country)
+    EditText editCountry;
+
+
+
     //endregion
    public static void start(Context context){
        context.startActivity(new Intent(context, MainActivity.class));
@@ -57,16 +70,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        getCurrentWeather();
+        editCountryName();
     }
 
     //region CurrentWeather
     private void getCurrentWeather(){
-       String city = "Bishkek";
+       showProgressBar();
+
+
        RetroFitBuilder.getService().getWeatherByName(
-               city,
-               getResources().getString(R.string.api_key),
-               "metric")
+
+               country, getResources().getString(R.string.api_key),METRIC)
                .enqueue(new Callback<CurrentWeather>() {
                    @SuppressLint("SetTextI18n")
                    @Override
@@ -78,10 +92,7 @@ public class MainActivity extends AppCompatActivity {
                                String icon = response.body().getWeather().get(0).getIcon();
                                String IMAGE_URL = "http://openweathermap.org/img/w/" + icon + ".png";
 
-                               Glide.with(MainActivity.this)
-                                       .load(IMAGE_URL)
-                                       .apply(new RequestOptions().override(200, 200))
-                                       .into(weatherImageView);
+                               Glide.with(MainActivity.this).load(IMAGE_URL).apply(new RequestOptions().override(200, 200)).into(weatherImageView);
 
                                        textViewCity.setText("Weathers in " + response.body().getName() + ", " + "KG");
                                        textViewTemp.setText( response.body().getMain().getTemp().intValue() + "°C");
@@ -89,16 +100,14 @@ public class MainActivity extends AppCompatActivity {
                                        textViewDescription.setText(response.body().getWeather().get(position).getMain());
 
                            }else {
-                               Toast.makeText(MainActivity.this, "The body is empty", Toast.LENGTH_SHORT).show();
-                           }
+                               Toaster.longMessage("The body is empty" + response.body());}
 
                        }else {
-                           Toast.makeText(MainActivity.this, "Request error" + response.code(),  Toast.LENGTH_SHORT).show();
-                       }
+                           Toaster.longMessage("Request error" + response.code());}
                    }
                    @Override
                    public void onFailure(@Nullable Call<CurrentWeather> call, Throwable t) {
-                       Toast.makeText(MainActivity.this, "Error" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                       Toaster.longMessage("Error" + t.getMessage());
                    }
                });
     }
@@ -107,8 +116,7 @@ public class MainActivity extends AppCompatActivity {
     //region RefreshWeather
     public void onRefreshClick(View view) {
        getCurrentWeather();
-       showProgressBar();
-        Toast.makeText(this, "Updated", Toast.LENGTH_SHORT).show();
+       Toaster.shortMessage("Updated");
     }
     //endregion
 
@@ -122,7 +130,27 @@ public class MainActivity extends AppCompatActivity {
     }
     //endregion
 
-    public void onForecastClick(View view) {
+    private void onForecastClick(View view) {
        ForecastActivity.start(this);
     }
+
+    private void editCountryName(){
+
+       editCountry.addTextChangedListener(new TextWatcher() {
+           @Override
+           public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+           }
+
+           @Override
+           public void onTextChanged(CharSequence s, int start, int before, int count) {
+           }
+
+           @Override
+           public void afterTextChanged(Editable s) {
+               country = s.toString();
+           }
+       });
+    }
+
+
 }

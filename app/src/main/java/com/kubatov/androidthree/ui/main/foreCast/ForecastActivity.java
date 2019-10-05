@@ -4,27 +4,35 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
+
 import com.kubatov.androidthree.R;
 import com.kubatov.androidthree.data.model.forecast_model.Forecast;
 import com.kubatov.androidthree.data.network.RetroFitBuilder;
+import com.kubatov.androidthree.ui.main.MainActivity;
+import com.kubatov.androidthree.util.Toaster;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.kubatov.androidthree.ui.main.MainActivity.CITY;
+import static com.kubatov.androidthree.ui.main.MainActivity.METRIC;
+
 public class ForecastActivity extends AppCompatActivity {
 
     private ForeCastAdapter adapter;
-
-    List<Forecast> forecastsList;
+    private List<Forecast> forecastsList;
 
     @BindView(R.id.forecast_recycler_view)
     RecyclerView foreCastRecycler;
@@ -46,15 +54,14 @@ public class ForecastActivity extends AppCompatActivity {
     private void initRecycler() {
         foreCastRecycler.setLayoutManager(new LinearLayoutManager(this));
         foreCastRecycler.setHasFixedSize(true);
-
         getForeCastData();
     }
 
     private void getForeCastData() {
         RetroFitBuilder.getService().getForecast(
-                "Bishkek",
+                CITY,
                 getResources().getString(R.string.api_key),
-                "metric"
+                METRIC
 
         ).enqueue(new Callback<Forecast>() {
             @Override
@@ -62,33 +69,26 @@ public class ForecastActivity extends AppCompatActivity {
 
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        Log.d("ololo", "body " + response.body().list.get(0).dt_txt);
-
-                        forecastsList.add( new Forecast(
+                        forecastsList.add(new Forecast(
                                 response.body().getCod(),
                                 response.body().getMessage(),
                                 response.body().getCity(),
                                 response.body().getCnt(),
                                 response.body().getList()));
-
                         adapter = new ForeCastAdapter(forecastsList);
                         foreCastRecycler.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
 
                     } else {
-                        Toast.makeText(ForecastActivity.this, "The body is empty", Toast.LENGTH_SHORT).show();
+                        Toaster.shortMessage("The body is empty");
                     }
-
                 } else {
-                    Toast.makeText(ForecastActivity.this, "Request error" + response.code(), Toast.LENGTH_SHORT).show();
-                    Log.d("ololo", "code " + response.code());
-                }
-            }
+                    Toaster.shortMessage("Request error"); } }
+
             @Override
             public void onFailure(@Nullable Call<Forecast> call, @Nullable Throwable t) {
-                Log.d("ololo", "failure " + t.getMessage());
+                Toaster.shortMessage("fail" + t.getMessage());
             }
         });
     }
-
 }

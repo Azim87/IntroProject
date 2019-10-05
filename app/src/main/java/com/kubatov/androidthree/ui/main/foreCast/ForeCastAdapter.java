@@ -7,16 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.kubatov.androidthree.R;
 import com.kubatov.androidthree.data.model.forecast_model.Forecast;
 import com.kubatov.androidthree.util.DateUtil;
-import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -38,9 +38,7 @@ public class ForeCastAdapter extends RecyclerView.Adapter<ForeCastAdapter.ForeCa
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ForeCastViewHolder holder, int position) {
-        Forecast forecast = forecastList.get(position);
-
-        String icon = forecast.list.get(0).weather.get(0).getIcon();
+        String icon = forecastList.get(position).getList().get(position).weather.get(0).getIcon();
         String IMAGE_URL = "http://openweathermap.org/img/w/" + icon + ".png";
 
         Glide.with(holder.itemView.getContext())
@@ -49,21 +47,23 @@ public class ForeCastAdapter extends RecyclerView.Adapter<ForeCastAdapter.ForeCa
                 .into(holder.foreCastIV);
 
         holder.tempTextView.setText(
-                DateUtil.convertUnixToDate(forecast.getList().get(0).dt) + "\n" +
-                        forecast.getList().get(0).main.getTemp() + "/" +
-                        forecast.getList().get(0).main.getTempMin() + "/" +
-                        forecast.getList().get(0).main.getTempMax() + "\n" +
-                        forecast.getList().get(0).main.getPressure() + "\n" +
-                        forecast.getList().get(0).main.getHumidity() + "\n" +
-                        forecast.getList().get(0).weather.get(0).getDescription() + "\n" +
-                        DateUtil.convertUnixToHour(forecast.getList().get(0).dt_txt));
+                DateUtil.convertUnixToDate(
+                        forecastList.get(position).getList().get(position).dt) + "\n" +
+                        forecastList.get(position).getList().get(position).main.getTemp() + "/" +
+                        forecastList.get(position).getList().get(position).main.getTempMin() + "/" +
+                        forecastList.get(position).getList().get(position).main.getTempMax() + "\n" +
+                        forecastList.get(position).getList().get(position).main.getPressure() + "\n" +
+                        forecastList.get(position).getList().get(position).main.getHumidity() + "\n" +
+                        forecastList.get(position).getList().get(position).weather.get(position).getDescription() + "\n" +
+                DateUtil.convertUnixToHour(
+                        forecastList.get(position).getList().get(position).dt_txt));
     }
 
     @Override
     public int getItemCount() {
-        if (forecastList != null){
+        if (forecastList != null) {
             return forecastList.size();
-        }else {
+        } else {
             return 0;
         }
     }
