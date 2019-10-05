@@ -12,11 +12,8 @@ import android.widget.Toast;
 import com.kubatov.androidthree.R;
 import com.kubatov.androidthree.data.model.forecast_model.Forecast;
 import com.kubatov.androidthree.data.network.RetroFitBuilder;
-
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
@@ -26,8 +23,8 @@ import retrofit2.Response;
 public class ForecastActivity extends AppCompatActivity {
 
     private ForeCastAdapter adapter;
-    /*Forecast forecast;*/
-    ArrayList<Forecast> list;
+
+    List<Forecast> forecastsList;
 
     @BindView(R.id.forecast_recycler_view)
     RecyclerView foreCastRecycler;
@@ -40,19 +37,15 @@ public class ForecastActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forecast);
+        forecastsList = new ArrayList<>();
 
         ButterKnife.bind(this);
-
-        list = new ArrayList<>();
         initRecycler();
     }
 
     private void initRecycler() {
         foreCastRecycler.setLayoutManager(new LinearLayoutManager(this));
         foreCastRecycler.setHasFixedSize(true);
-        adapter = new ForeCastAdapter(list);
-        foreCastRecycler.setAdapter(adapter);
-
 
         getForeCastData();
     }
@@ -71,19 +64,16 @@ public class ForecastActivity extends AppCompatActivity {
                     if (response.body() != null) {
                         Log.d("ololo", "body " + response.body().list.get(0).dt_txt);
 
-                        list.add(new Forecast(
+                        forecastsList.add( new Forecast(
                                 response.body().getCod(),
                                 response.body().getMessage(),
                                 response.body().getCity(),
                                 response.body().getCnt(),
                                 response.body().getList()));
-                        adapter.notifyDataSetChanged();
 
-                        /*Log.d("ololo", "body " + response.body().getCod());
-                        Log.d("ololo", "body " + response.body().getMessage());
-                        Log.d("ololo", "body " + response.body().getCity().getName());
-                        Log.d("ololo", "body " + response.body().getCnt());
-                        Log.d("ololo", "body " + response.body().getList().get(0).main.getTempMax().intValue());*/
+                        adapter = new ForeCastAdapter(forecastsList);
+                        foreCastRecycler.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
 
                     } else {
                         Toast.makeText(ForecastActivity.this, "The body is empty", Toast.LENGTH_SHORT).show();
@@ -93,15 +83,10 @@ public class ForecastActivity extends AppCompatActivity {
                     Toast.makeText(ForecastActivity.this, "Request error" + response.code(), Toast.LENGTH_SHORT).show();
                     Log.d("ololo", "code " + response.code());
                 }
-
-
             }
-
             @Override
             public void onFailure(@Nullable Call<Forecast> call, @Nullable Throwable t) {
                 Log.d("ololo", "failure " + t.getMessage());
-
-
             }
         });
     }

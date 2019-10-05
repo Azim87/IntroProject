@@ -83,10 +83,10 @@ public class MainActivity extends AppCompatActivity {
                                        .apply(new RequestOptions().override(200, 200))
                                        .into(weatherImageView);
 
-                               textViewCity.setText("Weathers in " + response.body().getName() + ", " + "KG");
-                               textViewTemp.setText( response.body().getMain().getTemp().intValue() + "°C");
-                               textViewHumidity.setText(response.body().getMain().getHumidity().toString() + " %");
-                               textViewDescription.setText(response.body().getWeather().get(position).getMain());
+                                       textViewCity.setText("Weathers in " + response.body().getName() + ", " + "KG");
+                                       textViewTemp.setText( response.body().getMain().getTemp().intValue() + "°C");
+                                       textViewHumidity.setText(response.body().getMain().getHumidity().toString() + " %");
+                                       textViewDescription.setText(response.body().getWeather().get(position).getMain());
 
                            }else {
                                Toast.makeText(MainActivity.this, "The body is empty", Toast.LENGTH_SHORT).show();
