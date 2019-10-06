@@ -12,6 +12,8 @@ import android.widget.LinearLayout;
 import com.kubatov.androidthree.R;
 import com.kubatov.androidthree.ui.main.MainActivity;
 import com.kubatov.androidthree.data.model.OnBoardModel;
+import com.kubatov.androidthree.ui.main.viewpager.CurrentWeatherFragment;
+
 import java.util.List;
 import java.util.ArrayList;
 import butterknife.BindView;
@@ -59,7 +61,7 @@ public class OnBoardActivity extends AppCompatActivity {
 
         nextButton.setOnClickListener(v -> {
             if (viewPager.getCurrentItem() == adapter.getCount() - 1) {
-                MainActivity.start(this);
+                CurrentWeatherFragment.start(this);
                 finish();
             } else {
                 viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);

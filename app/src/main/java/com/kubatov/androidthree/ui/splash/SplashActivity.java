@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.kubatov.androidthree.App;
 import com.kubatov.androidthree.ui.main.MainActivity;
+import com.kubatov.androidthree.ui.main.viewpager.CurrentWeatherFragment;
 import com.kubatov.androidthree.ui.onboard.OnBoardActivity;
 
 public class SplashActivity extends AppCompatActivity {
@@ -22,7 +23,7 @@ public class SplashActivity extends AppCompatActivity {
             finish();
 
         } else {
-            MainActivity.start(this);
+            CurrentWeatherFragment.start(this);
             finish();
         }
     }

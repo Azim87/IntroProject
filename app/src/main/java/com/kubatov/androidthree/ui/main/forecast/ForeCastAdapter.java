@@ -1,4 +1,4 @@
-package com.kubatov.androidthree.ui.main.foreCast;
+package com.kubatov.androidthree.ui.main.forecast;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

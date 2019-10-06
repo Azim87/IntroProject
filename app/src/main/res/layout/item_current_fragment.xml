@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     android:background="@drawable/nature"
-    tools:context=".ui.main.MainActivity">
+    >
 
     <ImageView
         android:id="@+id/weather_image"
@@ -22,8 +22,7 @@
         android:layout_marginBottom="10dp"
         android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="onForecastClick" />
+        android:layout_height="wrap_content" />
 
     <TextView
         style="@style/WeatherAppCityStyle"
@@ -96,7 +95,6 @@
         style="@style/WeatherAppRefreshButtonStyle"
         android:id="@+id/refresh_button"
         android:background="@drawable/btn_next_gradient"
-        android:onClick="onRefreshClick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

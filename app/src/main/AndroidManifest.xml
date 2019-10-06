@@ -20,7 +20,7 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name=".ui.main.foreCast.ForecastActivity"/>
+        <activity android:name=".ui.main.forecast.ForecastActivity"/>
 
         <activity android:name=".ui.onboard.OnBoardActivity" />
 

@@ -1,4 +1,4 @@
-package com.kubatov.androidthree.ui.main.foreCast;
+package com.kubatov.androidthree.ui.main.forecast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,8 +18,8 @@ import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import static com.kubatov.androidthree.ui.main.MainActivity.CITY;
-import static com.kubatov.androidthree.ui.main.MainActivity.METRIC;
+import static com.kubatov.androidthree.ui.main.viewpager.CurrentWeatherFragment.CITY;
+import static com.kubatov.androidthree.ui.main.viewpager.CurrentWeatherFragment.METRIC;
 
 public class ForecastActivity extends AppCompatActivity {
 

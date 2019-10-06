@@ -10,5 +10,5 @@
     <string name="description">Description</string>
     <string name="humidity">Humidity:</string>
     <string name="city">Weather in</string>
-    <string name="refreshButton">Refresh</string>
+    <string name="refreshButton">Find</string>
 </resources>
