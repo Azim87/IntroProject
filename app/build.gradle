@@ -57,7 +57,8 @@ dependencies {
     implementation 'com.airbnb.android:lottie:3.0.7'
 
     /* mapBox*/
-    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:8.4.0'
-
-
+    implementation ('com.mapbox.mapboxsdk:mapbox-android-sdk:8.4.0'){
+        exclude group: 'group_name', module: 'module_name'
+    }
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-locationlayer:0.5.0'
 }

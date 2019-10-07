@@ -52,7 +52,7 @@ public class ForecastActivity extends AppCompatActivity {
     private void getForeCastData() {
         RetroFitBuilder.getService().getForecast(
                 CITY,
-                getResources().getString(R.string.api_key),
+                getString(R.string.api_key),
                 METRIC
 
         ).enqueue(new Callback<Forecast>() {
