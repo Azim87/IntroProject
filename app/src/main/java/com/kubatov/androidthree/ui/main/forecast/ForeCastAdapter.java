@@ -14,17 +14,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.kubatov.androidthree.R;
-import com.kubatov.androidthree.data.model.forecast_model.Forecast;
-import com.kubatov.androidthree.util.DateUtil;
+import com.kubatov.androidthree.data.model.forecast_model.Mylist;
+
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ForeCastAdapter extends RecyclerView.Adapter<ForeCastAdapter.ForeCastViewHolder> {
-    private List<Forecast> forecastList;
+    private List<Mylist> forecastList;
     private Context mContext;
 
-    ForeCastAdapter(List<Forecast> forecastList) {
+    ForeCastAdapter(List<Mylist> forecastList) {
         this.forecastList = forecastList;
     }
 
@@ -38,7 +39,7 @@ public class ForeCastAdapter extends RecyclerView.Adapter<ForeCastAdapter.ForeCa
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ForeCastViewHolder holder, int position) {
-        String icon = forecastList.get(position).getList().get(position).weather.get(0).getIcon();
+        String icon = forecastList.get(position).weather.get(0).getIcon();
         String IMAGE_URL = "http://openweathermap.org/img/w/" + icon + ".png";
 
         Glide.with(holder.itemView.getContext())
@@ -47,16 +48,13 @@ public class ForeCastAdapter extends RecyclerView.Adapter<ForeCastAdapter.ForeCa
                 .into(holder.foreCastIV);
 
         holder.tempTextView.setText(
-                DateUtil.convertUnixToDate(
-                        forecastList.get(position).getList().get(position).dt) + "\n" +
-                        forecastList.get(position).getList().get(position).main.getTemp() + "/" +
-                        forecastList.get(position).getList().get(position).main.getTempMin() + "/" +
-                        forecastList.get(position).getList().get(position).main.getTempMax() + "\n" +
-                        forecastList.get(position).getList().get(position).main.getPressure() + "\n" +
-                        forecastList.get(position).getList().get(position).main.getHumidity() + "\n" +
-                        forecastList.get(position).getList().get(position).weather.get(position).getDescription() + "\n" +
-                DateUtil.convertUnixToHour(
-                        forecastList.get(position).getList().get(position).dt_txt));
+
+                forecastList.get(position).main.getTemp() + "/" +
+                        forecastList.get(position).main.getTempMin() + "/" +
+                        forecastList.get(position).main.getTempMax() + "\n" +
+                        forecastList.get(position).main.getPressure() + "\n" +
+                        forecastList.get(position).main.getHumidity() + "\n" +
+                        forecastList.get(position).weather.get(0).getDescription());
     }
 
     @Override

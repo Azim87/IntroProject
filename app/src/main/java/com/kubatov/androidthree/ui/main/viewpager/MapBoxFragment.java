@@ -10,10 +10,11 @@ import com.kubatov.androidthree.R;
 import com.kubatov.androidthree.ui.base.BaseFragment;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.annotations.MarkerOptions;
+import com.mapbox.mapboxsdk.camera.CameraPosition;
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
+import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.location.LocationComponent;
-import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
-import com.mapbox.mapboxsdk.location.modes.CameraMode;
-import com.mapbox.mapboxsdk.location.modes.RenderMode;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.Style;
@@ -101,16 +102,33 @@ public class MapBoxFragment extends BaseFragment {
     private void initedMap() {
         mapboxView.getMapAsync(mapboxMap -> {
             mapbox = mapboxMap;
-            mapboxMap.getUiSettings().setZoomRate(2);
-            mapboxMap.getUiSettings().setZoomGesturesEnabled(true);
-            mapboxMap.getUiSettings().setScrollGesturesEnabled(true);
-            mapboxMap.getUiSettings().setAllGesturesEnabled(true);
-            mapboxMap.setStyle(Style.DARK, style -> locationEnable(style));
+            mapboxMap.setStyle(Style.DARK);
+
+            /*mapboxMap.setCameraPosition(new CameraPosition.Builder().zoom(10)
+                    .bearing(180)
+                    .tilt(30)
+                    .build());
+            mapboxMap.animateCamera(CameraUpdateFactory
+                    .newCameraPosition(CameraPosition.DEFAULT), 7000);*/
+
+            //camera position bishkek
+            mapboxMap.addMarker(new MarkerOptions().setPosition(new LatLng(42.8747057, 74.6101724, 14.92)).setTitle("Bishkek"));
+            CameraPosition position = new CameraPosition.Builder()
+                    .target(new LatLng(42.8747057, 74.6101724, 14.92)) // Sets the new camera position
+                    .zoom(10) // Sets the zoom
+                    .bearing(180) // Rotate the camera
+                    .tilt(30) // Set the camera tilt
+                    .build(); // Creates a CameraPosition from the builder
+            mapboxMap.animateCamera(CameraUpdateFactory
+                    .newCameraPosition(position), 7000);
+
+            /*mapboxMap.setStyle(Style.DARK, style ->
+                    MapBoxFragment.this.locationEnable(style));*/
         });
     }
 
-    @SuppressWarnings({"MissingPermission"})
-    void locationEnable(Style style) {
+    //@SuppressWarnings({"MissingPermission"})
+    /*void locationEnable(Style style) {
         if (PermissionsManager.areLocationPermissionsGranted(getContext())) {
             locationComponent = mapbox.getLocationComponent();
             locationComponent.activateLocationComponent(LocationComponentActivationOptions.builder(getContext(), style).build());
@@ -120,6 +138,6 @@ public class MapBoxFragment extends BaseFragment {
         } else {
             permissionsManager.requestLocationPermissions(getActivity());
         }
-    }
+    }*/
 }
 
