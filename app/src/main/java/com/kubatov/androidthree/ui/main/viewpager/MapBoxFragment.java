@@ -1,6 +1,8 @@
 package com.kubatov.androidthree.ui.main.viewpager;
 
 import android.app.Notification;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -12,6 +14,7 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.kubatov.androidthree.R;
 import com.kubatov.androidthree.ui.base.BaseFragment;
+import com.kubatov.androidthree.ui.onboard.OnBoardActivity;
 import com.kubatov.androidthree.util.Toaster;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.mapboxsdk.Mapbox;
@@ -126,6 +129,10 @@ public class MapBoxFragment extends BaseFragment {
     }
 
     private void getNotification() {
+
+        Intent notificationIntent = new Intent(getContext(), OnBoardActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(getContext(), 0, notificationIntent, 0);
+
         Notification notification = new NotificationCompat.Builder(getContext(), CHANNEL_1)
                 .setSmallIcon(R.drawable.ic_my_location)
                 .setContentTitle("MAP BOX")
@@ -134,6 +141,7 @@ public class MapBoxFragment extends BaseFragment {
                 .setContentText("Getting your location...")
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .setContentIntent(contentIntent)
                 .build();
         managerCompat.notify(1, notification);
     }
