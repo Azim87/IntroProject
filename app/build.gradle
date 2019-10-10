@@ -10,6 +10,9 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField "String", "WEATHER_BASE_URL", "\"${weather_base_url}\""
+        buildConfigField "String", "MAPBOX_API_KEY", "\"${mapbox_api_key}\""
+        buildConfigField "String", "WEATHER_API_KEY", "\"${weather_api_key}\""
 
     }
     buildTypes {
@@ -60,7 +63,6 @@ dependencies {
     implementation ('com.mapbox.mapboxsdk:mapbox-android-sdk:8.4.0'){
         exclude group: 'group_name', module: 'module_name'
     }
-    implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-locationlayer:0.11.0'
 
-
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-annotation-v8:0.7.0'
 }

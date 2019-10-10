@@ -15,11 +15,14 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.kubatov.androidthree.R;
 import com.kubatov.androidthree.data.model.forecast_model.Mylist;
+import com.kubatov.androidthree.util.DateUtil;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.kubatov.androidthree.Constants.ICON_URL;
 
 public class ForeCastAdapter extends RecyclerView.Adapter<ForeCastAdapter.ForeCastViewHolder> {
     private List<Mylist> forecastList;
@@ -40,21 +43,19 @@ public class ForeCastAdapter extends RecyclerView.Adapter<ForeCastAdapter.ForeCa
     @Override
     public void onBindViewHolder(@NonNull ForeCastViewHolder holder, int position) {
         String icon = forecastList.get(position).weather.get(0).getIcon();
-        String IMAGE_URL = "http://openweathermap.org/img/w/" + icon + ".png";
+        String IMAGE_URL = ICON_URL + icon + ".png";
 
         Glide.with(holder.itemView.getContext())
                 .load(IMAGE_URL)
                 .apply(new RequestOptions().override(100, 100))
                 .into(holder.foreCastIV);
 
-        holder.tempTextView.setText(
-
-                forecastList.get(position).main.getTemp() + "/" +
-                        forecastList.get(position).main.getTempMin() + "/" +
-                        forecastList.get(position).main.getTempMax() + "\n" +
-                        forecastList.get(position).main.getPressure() + "\n" +
-                        forecastList.get(position).main.getHumidity() + "\n" +
-                        forecastList.get(position).weather.get(0).getDescription());
+        holder.tempTextView.setText("date: " + DateUtil.convertUnixToDate(forecastList.get(position).dt) + "\n" +
+                "min temp: " + forecastList.get(position).main.getTempMin().intValue() + "°C" + "\n" +
+                "max temp: " + forecastList.get(position).main.getTempMax().intValue() + "°C" + "\n" +
+                "humidity: " + forecastList.get(position).main.getHumidity() + "%" + "\n" +
+                "description: " + forecastList.get(position).weather.get(0).getMain() + "\n" +
+                DateUtil.convertUnixToHour("time:  " + DateUtil.convertUnixToHour(forecastList.get(position).getDt_txt())));
     }
 
     @Override

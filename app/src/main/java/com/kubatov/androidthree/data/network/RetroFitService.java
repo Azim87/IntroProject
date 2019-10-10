@@ -9,19 +9,18 @@ import retrofit2.http.Query;
 
 public interface RetroFitService {
 
-        @GET("weather")
+    public static final String WEATHER = "weather";
+    public static final String FORECAST = "forecast";
+
+    @GET(WEATHER)
         Call<CurrentWeather> getWeatherByName(
-                @Query("q") String city,
-                @Query("APPID") String key,
-                @Query("units") String unit
-        );
+            @Query("q") String city,
+            @Query("APPID") String key,
+            @Query("units") String unit);
 
-        @GET("forecast")
+    @GET(FORECAST)
         Call<Forecast> getForecast(
-                @Query("q") String city,
-                @Query("APPID") String key,
-                @Query("units") String unit
-
-        );
-
+            @Query("q") String city,
+            @Query("APPID") String key,
+            @Query("units") String unit);
 }

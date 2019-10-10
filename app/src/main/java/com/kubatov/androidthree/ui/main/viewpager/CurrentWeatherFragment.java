@@ -25,17 +25,21 @@ import com.kubatov.androidthree.ui.base.BaseFragment;
 import com.kubatov.androidthree.ui.main.forecast.ForecastActivity;
 import com.kubatov.androidthree.util.Toaster;
 
+import java.util.Objects;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.kubatov.androidthree.BuildConfig.WEATHER_API_KEY;
+import static com.kubatov.androidthree.Constants.ICON_URL;
+import static com.kubatov.androidthree.Constants.METRIC;
+
 public class CurrentWeatherFragment extends BaseFragment {
 
     //region InitViews
-    public static final String CITY = "Bishkek";
-    public static final String METRIC = "metric";
     @BindView(R.id.text_view_city)
     TextView textViewCity;
     @BindView(R.id.forecast_weather)
@@ -89,10 +93,11 @@ public class CurrentWeatherFragment extends BaseFragment {
     }
 
     private void getCurrentWeather() {
-
         showProgressBar();
+
         RetroFitBuilder.getService().getWeatherByName(
-                country, getResources().getString(R.string.api_key), METRIC)
+                country, WEATHER_API_KEY, METRIC)
+
                 .enqueue(new Callback<CurrentWeather>() {
                     @SuppressLint("SetTextI18n")
                     @Override
@@ -101,14 +106,8 @@ public class CurrentWeatherFragment extends BaseFragment {
                         if (response.isSuccessful()) {
                             if (response.body() != null) {
                                 hideProgressBar();
-                                showViews();
-                                String icon = response.body().getWeather().get(0).getIcon();
-                                String IMAGE_URL = "http://openweathermap.org/img/w/" + icon + ".png";
-                                Glide.with(getContext()).load(IMAGE_URL).apply(new RequestOptions().override(200, 200)).into(weatherImageView);
-                                textViewCity.setText("Weathers in " + response.body().getName() + ", " + response.body().getSys().getCountry());
-                                textViewTemp.setText(response.body().getMain().getTemp().intValue() + "°C");
-                                textViewHumidity.setText(response.body().getMain().getHumidity().toString() + " %");
-                                textViewDescription.setText(response.body().getWeather().get(position).getDescription());
+                                showViews(View.VISIBLE);
+                                setData(response);
                             } else {
                                 Toaster.longMessage("The body is empty" + response.body());
                             }
@@ -122,6 +121,17 @@ public class CurrentWeatherFragment extends BaseFragment {
                         Toaster.longMessage("Error" + t.getMessage());
                     }
                 });
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void setData(Response<CurrentWeather> response) {
+        String icon = response.body().getWeather().get(0).getIcon();
+        String IMAGE_URL = ICON_URL + icon + ".png";
+        Glide.with(Objects.requireNonNull(getContext())).load(IMAGE_URL).apply(new RequestOptions().override(200, 200)).into(weatherImageView);
+        textViewCity.setText("Weathers in " + response.body().getName() + ", " + response.body().getSys().getCountry());
+        textViewTemp.setText(response.body().getMain().getTemp().intValue() + "°C");
+        textViewHumidity.setText(response.body().getMain().getHumidity().toString() + " %");
+        textViewDescription.setText(response.body().getWeather().get(position).getDescription());
     }
 
     private void showProgressBar() {
@@ -149,12 +159,12 @@ public class CurrentWeatherFragment extends BaseFragment {
         });
     }
 
-    private void showViews() {
-        textViewCity.setVisibility(View.VISIBLE);
-        textViewTemp.setVisibility(View.VISIBLE);
-        textViewHumidity.setVisibility(View.VISIBLE);
-        texHumidity.setVisibility(View.VISIBLE);
-        textViewDescription.setVisibility(View.VISIBLE);
+    private void showViews(int visibility) {
+        textViewCity.setVisibility(visibility);
+        textViewTemp.setVisibility(visibility);
+        textViewHumidity.setVisibility(visibility);
+        texHumidity.setVisibility(visibility);
+        textViewDescription.setVisibility(visibility);
     }
 
     private void validationEditCountry() {
