@@ -6,4 +6,6 @@ public class Constants {
     public static final String CITY = "Bishkek";
 
     public static final String METRIC = "metric";
+
+    public static final String MESSAGE = "Getting your location...";
 }

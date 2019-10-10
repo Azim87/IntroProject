@@ -1,5 +1,6 @@
 package com.kubatov.androidthree;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -7,10 +8,13 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 
+import androidx.core.app.NotificationCompat;
+
 import com.kubatov.androidthree.data.preference.SharedPreferenceHelper;
 
 public class App extends Application {
     public static final String CHANNEL_1 = "channel_1";
+    private NotificationManager notifManager;
     private static SharedPreferenceHelper preferenceHelper;
     public static Context context;
 
@@ -24,20 +28,27 @@ public class App extends Application {
     }
 
     private void createNotificationChannel() {
+        if (notifManager == null) {
+            notifManager =
+                    (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        }
+
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel(
+            @SuppressLint("WrongConstant") NotificationChannel notificationChannel = new NotificationChannel(
                     CHANNEL_1,
                     "mapbox",
-                    NotificationManager.IMPORTANCE_HIGH
+                    NotificationManager.IMPORTANCE_MAX
             );
-            notificationChannel.setDescription("MapBox");
-            notificationChannel.setVibrationPattern(new long[]{1000, 1000, 1000, 1000, 1000});
-            notificationChannel.enableVibration(true);
-            notificationChannel.enableLights(true);
-            notificationChannel.setLightColor(Color.RED);
-
+            if (notificationChannel == null) {
+                notificationChannel.enableVibration(true);
+                notificationChannel.setDescription("MapBox");
+                notificationChannel.enableLights(true);
+                notificationChannel.setLightColor(Color.RED);
+            }
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.createNotificationChannel(notificationChannel);
+
         }
     }
 

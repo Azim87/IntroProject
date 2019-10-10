@@ -3,6 +3,7 @@ package com.kubatov.androidthree.ui.main.viewpager;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -14,6 +15,8 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.kubatov.androidthree.R;
 import com.kubatov.androidthree.ui.base.BaseFragment;
+import com.kubatov.androidthree.ui.main.MainActivity;
+import com.kubatov.androidthree.ui.main.viewpager.receiver.NotificationReceiver;
 import com.kubatov.androidthree.ui.onboard.OnBoardActivity;
 import com.kubatov.androidthree.util.Toaster;
 import com.mapbox.android.core.permissions.PermissionsManager;
@@ -38,8 +41,10 @@ import java.util.Random;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.content.Context.UI_MODE_SERVICE;
 import static com.kubatov.androidthree.App.CHANNEL_1;
 import static com.kubatov.androidthree.BuildConfig.MAPBOX_API_KEY;
+import static com.kubatov.androidthree.Constants.MESSAGE;
 
 public class MapBoxFragment extends BaseFragment {
 
@@ -116,7 +121,6 @@ public class MapBoxFragment extends BaseFragment {
     }
 
     //endregion
-
     @Override
     protected int getLayoutId() {
         return R.layout.item_map;
@@ -130,20 +134,29 @@ public class MapBoxFragment extends BaseFragment {
 
     private void getNotification() {
 
-        Intent notificationIntent = new Intent(getContext(), OnBoardActivity.class);
+        Intent notificationIntent = new Intent(getContext(), MainActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(getContext(), 0, notificationIntent, 0);
+
+        Intent broadcastIntent = new Intent(getContext(), NotificationReceiver.class);
+        broadcastIntent.setAction(MESSAGE);
+        broadcastIntent.putExtra("message", MESSAGE);
+        PendingIntent actionIntent = PendingIntent.getBroadcast(getContext(), 0, broadcastIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
 
         Notification notification = new NotificationCompat.Builder(getContext(), CHANNEL_1)
                 .setSmallIcon(R.drawable.ic_my_location)
                 .setContentTitle("MAP BOX")
-                .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setContentText("Getting your location...")
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setContentText(MESSAGE)
+                .setPriority(Notification.PRIORITY_MAX)
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .setColor(Color.BLUE)
                 .setContentIntent(contentIntent)
+                .setOnlyAlertOnce(true)
+                .setAutoCancel(true)
+                .addAction(R.drawable.ic_my_location, "MESSAGE", actionIntent)
+
                 .build();
-        managerCompat.notify(1, notification);
+                managerCompat.notify(1, notification);
     }
 
     private void initMap() {
@@ -158,7 +171,6 @@ public class MapBoxFragment extends BaseFragment {
             });
 
             mapboxMap.setStyle(Style.DARK, style -> {
-                mapboxMap.moveCamera(CameraUpdateFactory.zoomTo(2));
 
                 symbolManager = new SymbolManager(mapboxView, mapboxMap, style);
                 symbolManager.addClickListener(symbol ->
@@ -174,7 +186,7 @@ public class MapBoxFragment extends BaseFragment {
                 .tilt(30)
                 .build());
         mapboxMap.animateCamera(CameraUpdateFactory
-                .newCameraPosition(CameraPosition.DEFAULT), 7000);
+                .newCameraPosition(CameraPosition.DEFAULT), 2000);
     }
 
     private void getRandomMarkers() {
