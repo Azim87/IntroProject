@@ -15,9 +15,13 @@ import com.kubatov.androidthree.ui.base.BaseFragment;
 import com.kubatov.androidthree.util.Toaster;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.location.LocationComponent;
+import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
+import com.mapbox.mapboxsdk.location.modes.CameraMode;
+import com.mapbox.mapboxsdk.location.modes.RenderMode;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.Style;
@@ -38,16 +42,18 @@ public class MapBoxFragment extends BaseFragment {
 
     private static final String MAKI_ICON_CAR = "car-15";
     private final Random random = new Random();
-    @BindView(R.id.image_button)
-    ImageButton imageButton;
+
     private MapboxMap mapbox;
     private LocationComponent locationComponent;
     private PermissionsManager permissionsManager;
     private SymbolManager symbolManager;
+    @BindView(R.id.image_button)
+    ImageButton imageButton;
 
     @BindView(R.id.mapview)
     MapView mapboxView;
     private NotificationManagerCompat managerCompat;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -116,11 +122,7 @@ public class MapBoxFragment extends BaseFragment {
     @Override
     protected void initView(View view) {
         ButterKnife.bind(this, view);
-        initedMap();
-        imageButton.setOnClickListener(v -> {
-            getNotification();
-
-        });
+        initMap();
     }
 
     private void getNotification() {
@@ -136,20 +138,35 @@ public class MapBoxFragment extends BaseFragment {
         managerCompat.notify(1, notification);
     }
 
-    private void initedMap() {
+    private void initMap() {
+
         mapboxView.getMapAsync(mapboxMap -> {
             mapbox = mapboxMap;
+
+            imageButton.setOnClickListener(v -> {
+                getNotification();
+                cameraPosition(mapboxMap);
+                mapboxMap.setStyle(Style.DARK, style -> MapBoxFragment.this.locationEnable(style));
+            });
 
             mapboxMap.setStyle(Style.DARK, style -> {
                 mapboxMap.moveCamera(CameraUpdateFactory.zoomTo(2));
 
                 symbolManager = new SymbolManager(mapboxView, mapboxMap, style);
-
                 symbolManager.addClickListener(symbol ->
                         Toaster.shortMessage(symbol.getTextField() + " " + symbol.getLatLng()));
                 getRandomMarkers();
             });
         });
+    }
+
+    private void cameraPosition(MapboxMap mapboxMap) {
+        mapboxMap.setCameraPosition(new CameraPosition.Builder().zoom(14)
+                .bearing(180)
+                .tilt(30)
+                .build());
+        mapboxMap.animateCamera(CameraUpdateFactory
+                .newCameraPosition(CameraPosition.DEFAULT), 7000);
     }
 
     private void getRandomMarkers() {
@@ -173,5 +190,18 @@ public class MapBoxFragment extends BaseFragment {
         return new LatLng(
                 (random.nextDouble() * -42.0) + 79.1,
                 (random.nextDouble() * -41.0) + 79.1);
+    }
+
+    @SuppressWarnings({"MissingPermission"})
+    private void locationEnable(Style style) {
+        if (PermissionsManager.areLocationPermissionsGranted(getContext())) {
+            locationComponent = mapbox.getLocationComponent();
+            locationComponent.activateLocationComponent(LocationComponentActivationOptions.builder(getContext(), style).build());
+            locationComponent.setLocationComponentEnabled(true);
+            locationComponent.setCameraMode(CameraMode.TRACKING);
+            locationComponent.setRenderMode(RenderMode.COMPASS);
+        } else {
+            permissionsManager.requestLocationPermissions(getActivity());
+        }
     }
 }
