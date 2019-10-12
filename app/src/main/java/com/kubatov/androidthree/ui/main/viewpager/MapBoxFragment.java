@@ -7,17 +7,14 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-
 import com.kubatov.androidthree.R;
 import com.kubatov.androidthree.ui.base.BaseFragment;
 import com.kubatov.androidthree.ui.main.MainActivity;
 import com.kubatov.androidthree.ui.main.viewpager.receiver.NotificationReceiver;
-import com.kubatov.androidthree.ui.onboard.OnBoardActivity;
 import com.kubatov.androidthree.util.Toaster;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.mapboxsdk.Mapbox;
@@ -33,33 +30,37 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolManager;
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions;
+import com.mapbox.mapboxsdk.utils.BitmapUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static android.content.Context.UI_MODE_SERVICE;
-import static com.kubatov.androidthree.App.CHANNEL_1;
 import static com.kubatov.androidthree.BuildConfig.MAPBOX_API_KEY;
+import static com.kubatov.androidthree.Constants.CHANNEL_1;
+import static com.kubatov.androidthree.Constants.MAKI_ICON_CAR;
+import static com.kubatov.androidthree.Constants.MAP_BOX;
 import static com.kubatov.androidthree.Constants.MESSAGE;
+import static com.kubatov.androidthree.Constants.MESSAGES;
+import static com.kubatov.androidthree.Constants.TITLE;
 
 public class MapBoxFragment extends BaseFragment {
 
-    private static final String MAKI_ICON_CAR = "car-15";
+
     private final Random random = new Random();
 
     private MapboxMap mapbox;
     private LocationComponent locationComponent;
     private PermissionsManager permissionsManager;
     private SymbolManager symbolManager;
+
     @BindView(R.id.image_button)
     ImageButton imageButton;
 
     @BindView(R.id.mapview)
     MapView mapboxView;
+
     private NotificationManagerCompat managerCompat;
 
 
@@ -133,6 +134,7 @@ public class MapBoxFragment extends BaseFragment {
     }
 
     private void getNotification() {
+        managerCompat = NotificationManagerCompat.from(getContext());
 
         Intent notificationIntent = new Intent(getContext(), MainActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(getContext(), 0, notificationIntent, 0);
@@ -140,23 +142,28 @@ public class MapBoxFragment extends BaseFragment {
         Intent broadcastIntent = new Intent(getContext(), NotificationReceiver.class);
         broadcastIntent.setAction(MESSAGE);
         broadcastIntent.putExtra("message", MESSAGE);
-        PendingIntent actionIntent = PendingIntent.getBroadcast(getContext(), 0, broadcastIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent actionIntent = PendingIntent.getBroadcast(getContext(), 0, broadcastIntent, PendingIntent.FLAG_ONE_SHOT);
 
 
         Notification notification = new NotificationCompat.Builder(getContext(), CHANNEL_1)
                 .setSmallIcon(R.drawable.ic_my_location)
-                .setContentTitle("MAP BOX")
+                .setContentTitle(MAP_BOX)
                 .setContentText(MESSAGE)
                 .setPriority(Notification.PRIORITY_MAX)
-                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .setCategory(NotificationCompat.CATEGORY_NAVIGATION)
                 .setColor(Color.BLUE)
                 .setContentIntent(contentIntent)
                 .setOnlyAlertOnce(true)
                 .setAutoCancel(true)
-                .addAction(R.drawable.ic_my_location, "MESSAGE", actionIntent)
-
+                .addAction(R.drawable.ic_my_location, MESSAGES, actionIntent)
                 .build();
-                managerCompat.notify(1, notification);
+
+        for (int id = 0; id < 5; id++){
+            managerCompat.notify(id, notification);
+        }
+
+
+
     }
 
     private void initMap() {
@@ -171,6 +178,7 @@ public class MapBoxFragment extends BaseFragment {
             });
 
             mapboxMap.setStyle(Style.DARK, style -> {
+                style.addImageAsync(MAKI_ICON_CAR, BitmapUtils.getBitmapFromDrawable(getResources().getDrawable(R.drawable.loc)));
 
                 symbolManager = new SymbolManager(mapboxView, mapboxMap, style);
                 symbolManager.addClickListener(symbol ->
@@ -195,12 +203,11 @@ public class MapBoxFragment extends BaseFragment {
             symbolOptionsList.add(new SymbolOptions()
                     .withLatLng(createRandomLatLng())
                     .withIconImage(MAKI_ICON_CAR)
-                    .withTextField("OLOLO")
+                    .withTextField(TITLE)
                     .withTextAnchor("top")
                     .withTextRadialOffset(1F)
-                    .withDraggable(false));
+                    .withDraggable(true));
         }
-
         symbolManager.create(symbolOptionsList);
         symbolManager.setIconAllowOverlap(true);
         symbolManager.setIconTranslate(new Float[]{-4f, 7f});

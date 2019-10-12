@@ -27,8 +27,8 @@
         android:text="Далее"
         android:textColor="#fff"
         android:textAllCaps="false"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:background="@drawable/btn_next_gradient"
+
+
         android:layout_gravity="center"
         android:layout_width="280dp"
         android:layout_height="50dp"/>
