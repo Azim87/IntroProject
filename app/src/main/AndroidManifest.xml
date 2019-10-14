@@ -30,7 +30,7 @@
         <activity android:name=".ui.main.MainActivity" android:windowSoftInputMode="adjustResize">
 
         </activity>
-        <receiver android:name=".ui.main.viewpager.receiver.NotificationReceiver">
+        <receiver android:name=".ui.receiver.NotificationReceiver">
             <intent-filter>
                 <action android:name="com.kubatov.androidthree.ui.main.viewpager.receiver.NotificationReceiver"/>
             </intent-filter>

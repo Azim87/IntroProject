@@ -38,7 +38,6 @@ public class MainActivityTest {
     }
 
 
-
     @Test
     public void testNextButtonClick() {
         onView(withText(R.string.intro_name_1)).check(matches(isDisplayed()));

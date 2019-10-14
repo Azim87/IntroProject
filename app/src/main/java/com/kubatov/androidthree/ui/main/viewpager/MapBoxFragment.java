@@ -14,7 +14,7 @@ import androidx.core.app.NotificationManagerCompat;
 import com.kubatov.androidthree.R;
 import com.kubatov.androidthree.ui.base.BaseFragment;
 import com.kubatov.androidthree.ui.main.MainActivity;
-import com.kubatov.androidthree.ui.main.viewpager.receiver.NotificationReceiver;
+import com.kubatov.androidthree.ui.receiver.NotificationReceiver;
 import com.kubatov.androidthree.util.Toaster;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.mapboxsdk.Mapbox;
