@@ -59,7 +59,7 @@ public class MainActivityTest {
 
         onView(withId(R.id.button_next))
                 .perform(click());
-        intended(hasComponent(CurrentWeatherFragment.class.getName()));
+        intended(hasComponent(MainActivity.class.getName()));
 
         Intents.release();
     }

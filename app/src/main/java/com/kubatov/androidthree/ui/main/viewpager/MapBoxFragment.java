@@ -158,12 +158,9 @@ public class MapBoxFragment extends BaseFragment {
                 .addAction(R.drawable.ic_my_location, MESSAGES, actionIntent)
                 .build();
 
-        for (int id = 0; id < 5; id++){
+        for (int id = 0; id < 1; id++){
             managerCompat.notify(id, notification);
         }
-
-
-
     }
 
     private void initMap() {

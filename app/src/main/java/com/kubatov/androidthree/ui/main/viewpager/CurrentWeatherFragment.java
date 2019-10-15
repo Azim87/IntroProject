@@ -18,10 +18,12 @@ import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.kubatov.androidthree.App;
 import com.kubatov.androidthree.R;
 import com.kubatov.androidthree.data.model.current_weather.CurrentWeather;
 import com.kubatov.androidthree.data.network.RetroFitBuilder;
 import com.kubatov.androidthree.ui.base.BaseFragment;
+import com.kubatov.androidthree.ui.main.MainActivity;
 import com.kubatov.androidthree.ui.main.forecast.ForecastActivity;
 import com.kubatov.androidthree.util.Toaster;
 
@@ -65,7 +67,7 @@ public class CurrentWeatherFragment extends BaseFragment {
     //endregion
 
     public static void start(Context context) {
-        context.startActivity(new Intent(context, CurrentWeatherFragment.class));
+        context.startActivity(new Intent(App.context, MainActivity.class));
     }
 
     @Override

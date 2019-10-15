@@ -21,19 +21,22 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".ui.main.forecast.ForecastActivity"/>
         <activity android:name=".ui.onboard.OnBoardActivity" >
+        </activity>
+        <activity android:name=".ui.splash.SplashActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".ui.splash.SplashActivity" />
-        <activity android:name=".ui.main.MainActivity" android:windowSoftInputMode="adjustResize">
 
         </activity>
+        <activity android:name=".ui.main.MainActivity" android:windowSoftInputMode="adjustResize"/>
         <receiver android:name=".ui.receiver.NotificationReceiver">
-            <intent-filter>
+            <!--<intent-filter>
                 <action android:name="com.kubatov.androidthree.ui.main.viewpager.receiver.NotificationReceiver"/>
-            </intent-filter>
+            </intent-filter>-->
         </receiver>
+
+        <service android:name=".ui.service.TracingService"/>
     </application>
 </manifest>
