@@ -10,10 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.LinearLayout;
 import com.kubatov.androidthree.R;
-import com.kubatov.androidthree.ui.main.MainActivity;
-import com.kubatov.androidthree.data.model.OnBoardModel;
+import com.kubatov.androidthree.data.model.onBoard_model.OnBoardModel;
 import com.kubatov.androidthree.ui.main.viewpager.CurrentWeatherFragment;
-
 import java.util.List;
 import java.util.ArrayList;
 import butterknife.BindView;
@@ -119,7 +117,7 @@ public class OnBoardActivity extends AppCompatActivity {
                             textView.setText("Пропустить");
                             break;
                         case 3:
-                            nextButton.setText("Начать");
+                            nextButton.setText("Далее");
                             textView.setText("Готово");
                             break;
                     }

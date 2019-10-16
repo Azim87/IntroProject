@@ -1,37 +1,33 @@
 package com.kubatov.androidthree.ui.main.viewpager;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CurrentWeatherAdapter extends FragmentPagerAdapter {
+    private List<Fragment> fragmentList = new ArrayList<>();
 
     public CurrentWeatherAdapter(@NonNull FragmentManager fm) {
         super(fm);
     }
 
+    public void setAdapter(List<Fragment> fragments) {
+        this.fragmentList = fragments;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        switch (position) {
-            case 0:
-                return new CurrentWeatherFragment();
-            case 1:
-                return new MapBoxFragment();
-        }
-        return null;
+        return fragmentList.get(position);
     }
 
     @Override
     public int getCount() {
-        return 2;
-    }
-
-    @Nullable
-    @Override
-    public CharSequence getPageTitle(int position) {
-        return super.getPageTitle(position);
+        return fragmentList.size();
     }
 }

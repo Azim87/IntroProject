@@ -1,4 +1,4 @@
-package com.kubatov.androidthree.data.model;
+package com.kubatov.androidthree.data.model.onBoard_model;
 
 public class OnBoardModel {
 

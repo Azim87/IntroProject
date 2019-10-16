@@ -24,8 +24,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.kubatov.androidthree.ui.main.viewpager.CurrentWeatherFragment.CITY;
-import static com.kubatov.androidthree.ui.main.viewpager.CurrentWeatherFragment.METRIC;
+import static com.kubatov.androidthree.BuildConfig.WEATHER_API_KEY;
+import static com.kubatov.androidthree.Constants.CITY;
+import static com.kubatov.androidthree.Constants.METRIC;
 
 public class ForecastActivity extends AppCompatActivity {
 
@@ -56,41 +57,35 @@ public class ForecastActivity extends AppCompatActivity {
         getForeCastData();
     }
 
+
     private void getForeCastData() {
         RetroFitBuilder.getService().getForecast(
-                CITY,
-                getString(R.string.api_key),
-                METRIC
-
+                CITY, WEATHER_API_KEY, METRIC
         ).enqueue(new Callback<Forecast>() {
             @Override
             public void onResponse(@Nullable Call<Forecast> call, @Nullable Response<Forecast> response) {
-
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        for (Mylist mylist : response.body().getList())
-
-
-                            forecastsList.addAll(response.body().getList());
-                        /*forecastsList.add(new Forecast(
-                                response.body().getCod(),
-                                response.body().getMessage(),
-                                response.body().getCity(),
-                                response.body().getCnt(),
-                                response.body().getList()));*/
-                        foreCastRecycler.setAdapter(adapter);
-                        adapter.notifyDataSetChanged();
-
-                    } else {
-                        Toaster.shortMessage( "The body is empty");
-                    }
-                } else {
-                    Toaster.shortMessage("Request error"); } }
+                setData(response);
+            }
 
             @Override
             public void onFailure(@Nullable Call<Forecast> call, @Nullable Throwable t) {
                 Toaster.shortMessage("fail" + t.getMessage());
             }
         });
+    }
+
+    private void setData(Response<Forecast> response) {
+        if (response.isSuccessful()) {
+            if (response.body() != null) {
+                for (Mylist mylist : response.body().getList())
+                    forecastsList.addAll(response.body().getList());
+                foreCastRecycler.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+            } else {
+                Toaster.shortMessage("The body is empty");
+            }
+        } else {
+            Toaster.shortMessage("Request error");
+        }
     }
 }
