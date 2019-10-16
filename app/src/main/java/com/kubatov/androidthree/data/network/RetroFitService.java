@@ -15,12 +15,14 @@ public interface RetroFitService {
     @GET(WEATHER)
         Call<CurrentWeather> getWeatherByName(
             @Query("q") String city,
+            @Query("lang") String lang,
             @Query("APPID") String key,
             @Query("units") String unit);
 
     @GET(FORECAST)
         Call<Forecast> getForecast(
             @Query("q") String city,
+            @Query("lang") String lang,
             @Query("APPID") String key,
             @Query("units") String unit);
 }

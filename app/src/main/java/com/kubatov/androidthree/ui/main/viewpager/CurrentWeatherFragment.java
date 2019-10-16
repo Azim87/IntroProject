@@ -58,6 +58,8 @@ public class CurrentWeatherFragment extends BaseFragment {
     ProgressBar weatherProgress;
     @BindView(R.id.weather_image)
     ImageView weatherImageView;
+    @BindView(R.id.img_bg)
+    ImageView bgImageView;
     @BindView(R.id.edit_text_country)
     EditText editCountry;
     @BindView(R.id.refresh_button)
@@ -79,11 +81,13 @@ public class CurrentWeatherFragment extends BaseFragment {
     protected void initView(View view) {
         ButterKnife.bind(this, view);
         editCountryName();
+        bgImageView.animate().scaleX(1.3f).scaleY(1.3f).setDuration(5000).start();
 
         textViewForecast.setOnClickListener(v1 -> {
             ForecastActivity.start(this.getActivity());
         });
 
+        button.animate().scaleX(1.2f).scaleY(1.2f).setDuration(5000).start();
         button.setOnClickListener(v -> {
             getCurrentWeather();
         });
@@ -98,7 +102,7 @@ public class CurrentWeatherFragment extends BaseFragment {
         showProgressBar();
 
         RetroFitBuilder.getService().getWeatherByName(
-                country, WEATHER_API_KEY, METRIC)
+                country, "ru", WEATHER_API_KEY, METRIC)
 
                 .enqueue(new Callback<CurrentWeather>() {
                     @SuppressLint("SetTextI18n")

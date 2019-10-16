@@ -60,7 +60,7 @@ public class ForecastActivity extends AppCompatActivity {
 
     private void getForeCastData() {
         RetroFitBuilder.getService().getForecast(
-                CITY, WEATHER_API_KEY, METRIC
+                CITY, "ru", WEATHER_API_KEY, METRIC
         ).enqueue(new Callback<Forecast>() {
             @Override
             public void onResponse(@Nullable Call<Forecast> call, @Nullable Response<Forecast> response) {
