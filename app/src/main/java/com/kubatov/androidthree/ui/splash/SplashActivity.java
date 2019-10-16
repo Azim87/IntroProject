@@ -1,6 +1,7 @@
 package com.kubatov.androidthree.ui.splash;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,7 +15,19 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        checkIsFirstLaunch();
+
+       new CountDownTimer(1000,500){
+
+           @Override
+           public void onTick(long millisUntilFinished) {
+
+           }
+
+           @Override
+           public void onFinish() {
+               checkIsFirstLaunch();
+           }
+       }.start();
     }
 
     private void checkIsFirstLaunch() {

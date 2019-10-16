@@ -33,18 +33,20 @@ import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolManager;
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions;
 import com.mapbox.mapboxsdk.utils.BitmapUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 import static com.kubatov.androidthree.BuildConfig.MAPBOX_API_KEY;
 import static com.kubatov.androidthree.Constants.CHANNEL_1;
 import static com.kubatov.androidthree.Constants.MAKI_ICON_CAR;
 import static com.kubatov.androidthree.Constants.MAP_BOX;
 import static com.kubatov.androidthree.Constants.MESSAGE;
 import static com.kubatov.androidthree.Constants.MESSAGES;
-import static com.kubatov.androidthree.Constants.TITLE;
 
 public class MapBoxFragment extends BaseFragment implements View.OnClickListener {
 
@@ -195,18 +197,24 @@ public class MapBoxFragment extends BaseFragment implements View.OnClickListener
     }
 
     private void setCustomIcon(Style style){
-        style.addImageAsync(MAKI_ICON_CAR, BitmapUtils.getBitmapFromDrawable(getResources().getDrawable(R.drawable.loc)));
+        style.addImageAsync(MAKI_ICON_CAR, BitmapUtils.getBitmapFromDrawable(getResources().getDrawable(R.drawable.ic_custom_marker)));
     }
 
     private void getRandomMarkers() {
+        mapbox.setCameraPosition(new CameraPosition.Builder()
+                .target(createRandomLatLng())
+                .zoom(10)
+                .tilt(50)
+                .bearing(180)
+                .build());
+        mapbox.animateCamera(CameraUpdateFactory
+                .newCameraPosition(CameraPosition.DEFAULT), 10000);
+
         List<SymbolOptions> symbolOptionsList = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             symbolOptionsList.add(new SymbolOptions()
                     .withLatLng(createRandomLatLng())
                     .withIconImage(MAKI_ICON_CAR)
-                    .withTextField(TITLE)
-                    .withTextAnchor("top")
-                    .withTextRadialOffset(1F)
                     .withDraggable(true));
         }
         symbolManager.create(symbolOptionsList);
@@ -228,7 +236,7 @@ public class MapBoxFragment extends BaseFragment implements View.OnClickListener
                 .tilt(30)
                 .build());
         mapboxMap.animateCamera(CameraUpdateFactory
-                .newCameraPosition(CameraPosition.DEFAULT), 7000);
+                .newCameraPosition(CameraPosition.DEFAULT), 10000);
     }
 
     private void currentLocationEnabled(){

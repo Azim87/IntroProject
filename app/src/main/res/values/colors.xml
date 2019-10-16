@@ -6,6 +6,7 @@
 
     <color name="not_selected">#0FF3AB</color>
     <color name="selected">#0E23E6</color>
+    <color name="splash_screen">#000</color>
 
 
     <color name="weather_city_color">#EB1717</color>
