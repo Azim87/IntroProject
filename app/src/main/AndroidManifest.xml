@@ -37,6 +37,6 @@
             </intent-filter>-->
         </receiver>
 
-        <service android:name=".ui.service.TracingService"/>
+        <service android:name=".ui.service.TrackingService"/>
     </application>
 </manifest>

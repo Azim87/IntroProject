@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.kubatov.androidthree.R;
-import com.kubatov.androidthree.data.model.OnBoardModel;
+import com.kubatov.androidthree.data.model.onBoard_model.OnBoardModel;
 
 import java.util.List;
 

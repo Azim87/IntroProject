@@ -45,14 +45,14 @@ import static com.kubatov.androidthree.Constants.MESSAGE;
 import static com.kubatov.androidthree.Constants.MESSAGES;
 import static com.kubatov.androidthree.Constants.TITLE;
 
-public class MapBoxFragment extends BaseFragment {
+public class MapBoxFragment extends BaseFragment implements View.OnClickListener {
 
 
     private final Random random = new Random();
 
     private MapboxMap mapbox;
     private LocationComponent locationComponent;
-    private PermissionsManager permissionsManager;
+    PermissionsManager permissionsManager;
     private SymbolManager symbolManager;
 
     @BindView(R.id.image_button)
@@ -131,6 +131,7 @@ public class MapBoxFragment extends BaseFragment {
     protected void initView(View view) {
         ButterKnife.bind(this, view);
         initMap();
+        imageButton.setOnClickListener(this);
     }
 
     private void getNotification() {
@@ -168,11 +169,7 @@ public class MapBoxFragment extends BaseFragment {
         mapboxView.getMapAsync(mapboxMap -> {
             mapbox = mapboxMap;
 
-            imageButton.setOnClickListener(v -> {
-                getNotification();
-                cameraPosition(mapboxMap);
                 mapboxMap.setStyle(Style.DARK, style -> MapBoxFragment.this.locationEnable(style));
-            });
 
             mapboxMap.setStyle(Style.DARK, style -> {
                 style.addImageAsync(MAKI_ICON_CAR, BitmapUtils.getBitmapFromDrawable(getResources().getDrawable(R.drawable.loc)));
@@ -227,5 +224,23 @@ public class MapBoxFragment extends BaseFragment {
         } else {
             permissionsManager.requestLocationPermissions(getActivity());
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.image_button:
+                getNotification();
+                cameraPosition(mapbox);
+                locationEnable();
+                return;
+
+
+
+
+
+                default:
+        }
+
     }
 }
