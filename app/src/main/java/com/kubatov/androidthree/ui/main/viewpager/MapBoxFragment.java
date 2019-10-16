@@ -33,14 +33,11 @@ import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolManager;
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions;
 import com.mapbox.mapboxsdk.utils.BitmapUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 import static com.kubatov.androidthree.BuildConfig.MAPBOX_API_KEY;
 import static com.kubatov.androidthree.Constants.CHANNEL_1;
 import static com.kubatov.androidthree.Constants.MAKI_ICON_CAR;
