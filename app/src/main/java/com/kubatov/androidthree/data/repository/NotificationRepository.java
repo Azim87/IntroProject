@@ -6,8 +6,8 @@ import androidx.lifecycle.LiveData;
 
 import com.kubatov.androidthree.data.asynktask.InsertAsyncTask;
 import com.kubatov.androidthree.data.dao.NotificationDao;
-import com.kubatov.androidthree.data.database.NotificationDataBase;
-import com.kubatov.androidthree.data.model.notification_model.Notification;
+import com.kubatov.androidthree.data.database.NotificationDatabase;
+import com.kubatov.androidthree.data.model.notification.Notification;
 
 import java.util.List;
 
@@ -17,9 +17,9 @@ public class NotificationRepository {
     private LiveData<List<Notification>> allNotification;
 
     public NotificationRepository(Application application) {
-        NotificationDataBase notificationDataBase = NotificationDataBase.getInstance(application);
+        NotificationDatabase notificationDataBase = NotificationDatabase.getInstance(application);
         notificationDao = notificationDataBase.notificationDao();
-        allNotification = notificationDao.getAll();
+        allNotification = notificationDao.getAllNotification();
 
     }
 

@@ -1,19 +1,23 @@
 package com.kubatov.androidthree.ui.onboard;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
+
 import com.kubatov.androidthree.R;
 import com.kubatov.androidthree.data.model.onBoard_model.OnBoardModel;
-import com.kubatov.androidthree.ui.main.viewpager.CurrentWeatherFragment;
-import java.util.List;
+import com.kubatov.androidthree.ui.main.MainActivity;
+
 import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -59,7 +63,7 @@ public class OnBoardActivity extends AppCompatActivity {
 
         nextButton.setOnClickListener(v -> {
             if (viewPager.getCurrentItem() == adapter.getCount() - 1) {
-                CurrentWeatherFragment.start(this);
+                MainActivity.start(this);
                 finish();
             } else {
                 viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);

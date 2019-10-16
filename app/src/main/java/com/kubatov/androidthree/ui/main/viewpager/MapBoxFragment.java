@@ -7,10 +7,12 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+
 import com.kubatov.androidthree.R;
 import com.kubatov.androidthree.ui.base.BaseFragment;
 import com.kubatov.androidthree.ui.main.MainActivity;
@@ -35,8 +37,10 @@ import com.mapbox.mapboxsdk.utils.BitmapUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 import static com.kubatov.androidthree.BuildConfig.MAPBOX_API_KEY;
 import static com.kubatov.androidthree.Constants.CHANNEL_1;
 import static com.kubatov.androidthree.Constants.MAKI_ICON_CAR;
@@ -48,28 +52,45 @@ import static com.kubatov.androidthree.Constants.TITLE;
 public class MapBoxFragment extends BaseFragment implements View.OnClickListener {
 
 
+    //region Views and Objects
     private final Random random = new Random();
-
     private MapboxMap mapbox;
     private LocationComponent locationComponent;
     PermissionsManager permissionsManager;
     private SymbolManager symbolManager;
+    private NotificationManagerCompat managerCompat;
 
-    @BindView(R.id.image_button)
-    ImageButton imageButton;
+    @BindView(R.id.start_image_button)
+    ImageButton startImageButton;
+
+    @BindView(R.id.stop_image_button)
+    ImageButton stopImageButton;
 
     @BindView(R.id.mapview)
     MapView mapboxView;
+    //endregion
 
-    private NotificationManagerCompat managerCompat;
-
-
+    //region Fragment Methods
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         Mapbox.getInstance(getContext(), MAPBOX_API_KEY);
         super.onCreate(savedInstanceState);
         managerCompat = NotificationManagerCompat.from(getContext());
     }
+
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.item_map;
+    }
+
+    @Override
+    protected void initView(View view) {
+        ButterKnife.bind(this, view);
+        initMap();
+        startImageButton.setOnClickListener(this);
+    }
+    //endregion
 
     //region MapBoxLifeCycle
     @Override
@@ -122,18 +143,8 @@ public class MapBoxFragment extends BaseFragment implements View.OnClickListener
     }
 
     //endregion
-    @Override
-    protected int getLayoutId() {
-        return R.layout.item_map;
-    }
 
-    @Override
-    protected void initView(View view) {
-        ButterKnife.bind(this, view);
-        initMap();
-        imageButton.setOnClickListener(this);
-    }
-
+    //region Notification
     private void getNotification() {
         managerCompat = NotificationManagerCompat.from(getContext());
 
@@ -154,41 +165,40 @@ public class MapBoxFragment extends BaseFragment implements View.OnClickListener
                 .setCategory(NotificationCompat.CATEGORY_NAVIGATION)
                 .setColor(Color.BLUE)
                 .setContentIntent(contentIntent)
-                .setOnlyAlertOnce(true)
                 .setAutoCancel(true)
                 .addAction(R.drawable.ic_my_location, MESSAGES, actionIntent)
                 .build();
+        managerCompat.notify(1, notification);
 
-        for (int id = 0; id < 1; id++){
-            managerCompat.notify(id, notification);
-        }
     }
+    //endregion
 
+    //region Init Map
     private void initMap() {
 
         mapboxView.getMapAsync(mapboxMap -> {
             mapbox = mapboxMap;
-
-                mapboxMap.setStyle(Style.DARK, style -> MapBoxFragment.this.locationEnable(style));
-
-            mapboxMap.setStyle(Style.DARK, style -> {
-                style.addImageAsync(MAKI_ICON_CAR, BitmapUtils.getBitmapFromDrawable(getResources().getDrawable(R.drawable.loc)));
-
-                symbolManager = new SymbolManager(mapboxView, mapboxMap, style);
-                symbolManager.addClickListener(symbol ->
-                        Toaster.shortMessage(symbol.getTextField() + " " + symbol.getLatLng()));
-                getRandomMarkers();
-            });
+            customMarkers(mapboxMap);
         });
     }
+    //endregion
 
-    private void cameraPosition(MapboxMap mapboxMap) {
-        mapboxMap.setCameraPosition(new CameraPosition.Builder().zoom(14)
-                .bearing(180)
-                .tilt(30)
-                .build());
-        mapboxMap.animateCamera(CameraUpdateFactory
-                .newCameraPosition(CameraPosition.DEFAULT), 2000);
+    //region Custom Markers
+    private void customMarkers(MapboxMap mapboxMap){
+        mapboxMap.setStyle(Style.DARK, style -> {
+            setCustomIcon(style);
+            initSymbolManager(style);
+            getRandomMarkers();
+        });
+    }
+    private void initSymbolManager(Style style){
+        symbolManager = new SymbolManager(mapboxView, mapbox, style);
+        symbolManager.addClickListener(symbol ->
+                Toaster.shortMessage(symbol.getTextField() + " " + symbol.getLatLng()));
+    }
+
+    private void setCustomIcon(Style style){
+        style.addImageAsync(MAKI_ICON_CAR, BitmapUtils.getBitmapFromDrawable(getResources().getDrawable(R.drawable.loc)));
     }
 
     private void getRandomMarkers() {
@@ -212,6 +222,22 @@ public class MapBoxFragment extends BaseFragment implements View.OnClickListener
                 (random.nextDouble() * -42.0) + 79.1,
                 (random.nextDouble() * -41.0) + 79.1);
     }
+    //endregion
+
+    //region Current Location
+    private void cameraPosition(MapboxMap mapboxMap) {
+        mapboxMap.setCameraPosition(new CameraPosition.Builder().zoom(14)
+                .bearing(180)
+                .tilt(30)
+                .build());
+        mapboxMap.animateCamera(CameraUpdateFactory
+                .newCameraPosition(CameraPosition.DEFAULT), 7000);
+    }
+
+    private void currentLocationEnabled(){
+        mapbox.setStyle(Style.DARK, style -> MapBoxFragment.this.locationEnable(style));
+        cameraPosition(mapbox);
+    }
 
     @SuppressWarnings({"MissingPermission"})
     private void locationEnable(Style style) {
@@ -225,22 +251,23 @@ public class MapBoxFragment extends BaseFragment implements View.OnClickListener
             permissionsManager.requestLocationPermissions(getActivity());
         }
     }
+    //endregion
 
+    //region On Click
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.image_button:
+            case R.id.start_image_button:
                 getNotification();
-                cameraPosition(mapbox);
-                locationEnable();
+                currentLocationEnabled();
                 return;
 
+            case R.id.stop_image_button:
+                return;
 
-
-
-
-                default:
+            default:
         }
 
     }
+    //endregion
 }
