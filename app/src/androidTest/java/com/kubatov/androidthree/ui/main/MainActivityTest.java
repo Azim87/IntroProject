@@ -3,6 +3,7 @@ package com.kubatov.androidthree.ui.main;
 import android.content.Intent;
 
 import androidx.test.espresso.intent.Intents;
+import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 
 import com.kubatov.androidthree.R;
@@ -25,7 +26,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
-
+@LargeTest
 public class MainActivityTest {
 
     @Rule

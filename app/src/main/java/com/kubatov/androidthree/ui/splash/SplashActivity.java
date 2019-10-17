@@ -20,7 +20,6 @@ public class SplashActivity extends AppCompatActivity {
 
            @Override
            public void onTick(long millisUntilFinished) {
-
            }
 
            @Override

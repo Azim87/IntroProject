@@ -6,7 +6,9 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
+
 import com.kubatov.androidthree.data.preference.SharedPreferenceHelper;
+
 import static com.kubatov.androidthree.Constants.CHANNEL_1;
 import static com.kubatov.androidthree.Constants.MAPBOX;
 
@@ -21,10 +23,9 @@ public class App extends Application {
         preferenceHelper = new SharedPreferenceHelper(this);
         context = getApplicationContext();
         createNotificationChannel();
-
     }
 
-    private void createNotificationChannel() {
+    public void createNotificationChannel(){
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             NotificationChannel notificationChannel = new NotificationChannel(
@@ -33,21 +34,17 @@ public class App extends Application {
                     MAPBOX,
                     NotificationManager.IMPORTANCE_HIGH );
 
-                notificationChannel.setDescription(MAPBOX);
-                notificationChannel.enableLights(true);
-                notificationChannel.setLightColor(Color.RED);
+            notificationChannel.setLightColor(Color.RED);
 
             NotificationManager manager = getSystemService(NotificationManager.class);
-            manager.createNotificationChannel(notificationChannel);
+            if (manager != null) {
+                manager.createNotificationChannel(notificationChannel);
+            }
 
         }
     }
 
     public static  SharedPreferenceHelper getPreferenceHelper() {
         return preferenceHelper;
-    }
-
-    public static void setPreferenceHelper(SharedPreferenceHelper preferenceHelper) {
-        App.preferenceHelper = preferenceHelper;
     }
 }

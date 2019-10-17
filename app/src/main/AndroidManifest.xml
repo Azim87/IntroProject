@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <application
         android:name=".App"
@@ -31,6 +32,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.main.MainActivity"/>
+        <service android:name=".ui.service.TrackingService"/>
         <receiver android:name=".ui.receiver.NotificationReceiver"/>
     </application>
 </manifest>

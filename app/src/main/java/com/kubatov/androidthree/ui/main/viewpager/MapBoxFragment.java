@@ -1,22 +1,20 @@
 package com.kubatov.androidthree.ui.main.viewpager;
 
-import android.app.Notification;
-import android.app.PendingIntent;
 import android.content.Intent;
-import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 
 import com.kubatov.androidthree.R;
 import com.kubatov.androidthree.ui.base.BaseFragment;
-import com.kubatov.androidthree.ui.main.MainActivity;
-import com.kubatov.androidthree.ui.receiver.NotificationReceiver;
+import com.kubatov.androidthree.ui.service.TrackingService;
 import com.kubatov.androidthree.util.Toaster;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.mapboxsdk.Mapbox;
@@ -32,21 +30,20 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolManager;
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions;
-import com.mapbox.mapboxsdk.utils.BitmapUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.kubatov.androidthree.BuildConfig.MAPBOX_API_KEY;
-import static com.kubatov.androidthree.Constants.CHANNEL_1;
+import static com.kubatov.androidthree.Constants.DESCRIPTION;
 import static com.kubatov.androidthree.Constants.MAKI_ICON_CAR;
-import static com.kubatov.androidthree.Constants.MAP_BOX;
-import static com.kubatov.androidthree.Constants.MESSAGE;
-import static com.kubatov.androidthree.Constants.MESSAGES;
+import static com.kubatov.androidthree.Constants.TITLE;
+import static com.mapbox.mapboxsdk.utils.BitmapUtils.getBitmapFromDrawable;
 
 public class MapBoxFragment extends BaseFragment implements View.OnClickListener {
 
@@ -144,30 +141,21 @@ public class MapBoxFragment extends BaseFragment implements View.OnClickListener
     //endregion
 
     //region Notification
-    private void getNotification() {
-        managerCompat = NotificationManagerCompat.from(getContext());
+    @RequiresApi(api = Build.VERSION_CODES.P)
+    public void startService() {
+        String title = "Hello, World!";
+        String description = "Hello, World 2!";
 
-        Intent notificationIntent = new Intent(getContext(), MainActivity.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(getContext(), 0, notificationIntent, 0);
+        Intent titleIntent = new Intent(getContext(), TrackingService.class);
+        titleIntent.putExtra(TITLE, title);
+        titleIntent.putExtra(DESCRIPTION, description);
+        ContextCompat.startForegroundService(getContext(), titleIntent);
 
-        Intent broadcastIntent = new Intent(getContext(), NotificationReceiver.class);
-        broadcastIntent.setAction(MESSAGE);
-        broadcastIntent.putExtra("message", MESSAGE);
-        PendingIntent actionIntent = PendingIntent.getBroadcast(getContext(), 0, broadcastIntent, PendingIntent.FLAG_ONE_SHOT);
+    }
 
-
-        Notification notification = new NotificationCompat.Builder(getContext(), CHANNEL_1)
-                .setSmallIcon(R.drawable.ic_my_location)
-                .setContentTitle(MAP_BOX)
-                .setContentText(MESSAGE)
-                .setPriority(Notification.PRIORITY_MAX)
-                .setCategory(NotificationCompat.CATEGORY_NAVIGATION)
-                .setColor(Color.BLUE)
-                .setContentIntent(contentIntent)
-                .setAutoCancel(true)
-                .addAction(R.drawable.ic_my_location, MESSAGES, actionIntent)
-                .build();
-        managerCompat.notify(1, notification);
+    public void stopService(){
+        Intent stopIntent = new Intent(getContext(), TrackingService.class);
+        onStop();
 
     }
     //endregion
@@ -197,7 +185,7 @@ public class MapBoxFragment extends BaseFragment implements View.OnClickListener
     }
 
     private void setCustomIcon(Style style){
-        style.addImageAsync(MAKI_ICON_CAR, BitmapUtils.getBitmapFromDrawable(getResources().getDrawable(R.drawable.ic_custom_marker)));
+        style.addImageAsync(MAKI_ICON_CAR, Objects.requireNonNull(getBitmapFromDrawable(getResources().getDrawable(R.drawable.ic_custom_marker))));
     }
 
     private void getRandomMarkers() {
@@ -259,15 +247,17 @@ public class MapBoxFragment extends BaseFragment implements View.OnClickListener
     //endregion
 
     //region On Click
+    @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.start_image_button:
-                getNotification();
+                startService();
                 currentLocationEnabled();
                 return;
 
             case R.id.stop_image_button:
+                stopService();
                 return;
 
             default:
