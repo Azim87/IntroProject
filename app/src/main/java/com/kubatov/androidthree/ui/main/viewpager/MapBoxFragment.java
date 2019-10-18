@@ -1,18 +1,34 @@
 package com.kubatov.androidthree.ui.main.viewpager;
 
+import android.Manifest;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 import com.kubatov.androidthree.R;
+import com.kubatov.androidthree.data.database.NotificationDatabase;
+import com.kubatov.androidthree.data.model.notification.Notification;
 import com.kubatov.androidthree.ui.base.BaseFragment;
 import com.kubatov.androidthree.ui.service.TrackingService;
 import com.kubatov.androidthree.util.Toaster;
@@ -52,9 +68,16 @@ public class MapBoxFragment extends BaseFragment implements View.OnClickListener
     private final Random random = new Random();
     private MapboxMap mapbox;
     private LocationComponent locationComponent;
-    PermissionsManager permissionsManager;
+    private PermissionsManager permissionsManager;
     private SymbolManager symbolManager;
-    private NotificationManagerCompat managerCompat;
+    private FusedLocationProviderClient mLocationProviderClient;
+    private LocationRequest mLocationRequest;
+    private LocationCallback mLocationCallback;
+
+    private double lat;
+    private double longit;
+
+    private ArrayList<Notification> notificationArrayList;
 
     @BindView(R.id.start_image_button)
     ImageButton startImageButton;
@@ -69,11 +92,70 @@ public class MapBoxFragment extends BaseFragment implements View.OnClickListener
     //region Fragment Methods
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+
         Mapbox.getInstance(getContext(), MAPBOX_API_KEY);
         super.onCreate(savedInstanceState);
-        managerCompat = NotificationManagerCompat.from(getContext());
+
+        notificationArrayList = new ArrayList<>();
+        mLocationProviderClient = LocationServices.getFusedLocationProviderClient(Objects.requireNonNull(getActivity()));
+        mLocationCallback = new LocationCallback(){
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                super.onLocationResult(locationResult);
+                Location location = locationResult.getLastLocation();
+                longit = location.getLongitude();
+                lat = location.getLatitude();
+                Log.d("ololo", "notification:  " + location.getLatitude() + " " + location.getLongitude());
+                Log.d("ololo", "notificationList:  " +lat + " " + longit);
+
+                notificationArrayList.add(
+                        new Notification(longit, lat));
+
+                NotificationDatabase.getInstance(getContext()).notificationDao().insert(notificationArrayList);
+
+
+            }
+        };
+        initLocationRequest();
+        getPermission();
+
     }
 
+    private void getPermission(){
+        Dexter.withActivity(getActivity())
+                .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                        Log.d("ololo", "onPermissionGranted: " + response.getPermissionName());
+                        requestLocationUpdates();
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        Log.d("ololo", "onPermissionDenied: " + response.isPermanentlyDenied());
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                        Log.d("ololo", "onPermissionRationaleShouldBeShown: " + permission.getName());
+                    }
+                }).check();
+    }
+
+    private void requestLocationUpdates(){
+        mLocationProviderClient.requestLocationUpdates(
+                mLocationRequest,
+                mLocationCallback,
+                Looper.getMainLooper());
+    }
+
+    private void initLocationRequest(){
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(10000L);
+        mLocationRequest.setFastestInterval(5000L);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
 
     @Override
     protected int getLayoutId() {
@@ -82,6 +164,7 @@ public class MapBoxFragment extends BaseFragment implements View.OnClickListener
 
     @Override
     protected void initView(View view) {
+
         ButterKnife.bind(this, view);
         initMap();
         startImageButton.setOnClickListener(this);
@@ -142,7 +225,7 @@ public class MapBoxFragment extends BaseFragment implements View.OnClickListener
 
     //region Notification
     @RequiresApi(api = Build.VERSION_CODES.P)
-    public void startService() {
+    private void startService() {
         String title = "Hello, World!";
         String description = "Hello, World 2!";
 
@@ -153,9 +236,9 @@ public class MapBoxFragment extends BaseFragment implements View.OnClickListener
 
     }
 
-    public void stopService(){
+
+    private void stopService(){
         Intent stopIntent = new Intent(getContext(), TrackingService.class);
-        onStop();
 
     }
     //endregion
@@ -181,7 +264,7 @@ public class MapBoxFragment extends BaseFragment implements View.OnClickListener
     private void initSymbolManager(Style style){
         symbolManager = new SymbolManager(mapboxView, mapbox, style);
         symbolManager.addClickListener(symbol ->
-                Toaster.shortMessage(symbol.getTextField() + " " + symbol.getLatLng()));
+                Toaster.shortMessage( " " + symbol.getLatLng()));
     }
 
     private void setCustomIcon(Style style){

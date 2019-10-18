@@ -15,7 +15,7 @@ import java.util.List;
 public interface NotificationDao {
 
     @Insert
-    void insert(Notification notification);
+    void insert(List<Notification> notification);
 
     @Update
     void update(Notification notification);
