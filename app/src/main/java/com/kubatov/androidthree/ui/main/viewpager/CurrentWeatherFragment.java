@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,6 +26,7 @@ import com.kubatov.androidthree.data.network.RetroFitBuilder;
 import com.kubatov.androidthree.ui.base.BaseFragment;
 import com.kubatov.androidthree.ui.main.MainActivity;
 import com.kubatov.androidthree.ui.main.forecast.ForecastActivity;
+import com.kubatov.androidthree.util.SnackBar;
 import com.kubatov.androidthree.util.Toaster;
 
 import java.util.Objects;
@@ -37,6 +39,7 @@ import retrofit2.Response;
 
 import static com.kubatov.androidthree.BuildConfig.WEATHER_API_KEY;
 import static com.kubatov.androidthree.Constants.ICON_URL;
+import static com.kubatov.androidthree.Constants.LANG;
 import static com.kubatov.androidthree.Constants.METRIC;
 
 public class CurrentWeatherFragment extends BaseFragment {
@@ -66,6 +69,8 @@ public class CurrentWeatherFragment extends BaseFragment {
     Button button;
     private int position = 0;
     private String country;
+
+    private RelativeLayout relativeLayout;
     //endregion
 
     public static void start(Context context) {
@@ -89,7 +94,7 @@ public class CurrentWeatherFragment extends BaseFragment {
 
         button.animate().scaleX(1.2f).scaleY(1.2f).setDuration(5000).start();
         button.setOnClickListener(v -> {
-            getCurrentWeather();
+            getCurrentWeather(v);
         });
     }
 
@@ -98,17 +103,21 @@ public class CurrentWeatherFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
-    private void getCurrentWeather() {
+    private void getCurrentWeather(View view) {
         showProgressBar();
 
         RetroFitBuilder.getService().getWeatherByName(
-                country, "ru", WEATHER_API_KEY, METRIC)
+                country,
+                LANG,
+                WEATHER_API_KEY,
+                METRIC
+        )
 
                 .enqueue(new Callback<CurrentWeather>() {
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void onResponse(@Nullable Call<CurrentWeather> call, @Nullable Response<CurrentWeather> response) {
-                        validationEditCountry();
+                        validationEditCountry(view);
                         if (response.isSuccessful()) {
                             if (response.body() != null) {
                                 hideProgressBar();
@@ -118,7 +127,8 @@ public class CurrentWeatherFragment extends BaseFragment {
                                 Toaster.longMessage("The body is empty" + response.body());
                             }
                         } else {
-                            Toaster.longMessage("Request Error");
+                            //Toaster.longMessage("Weather not found!");
+                            SnackBar.showSnackBar("Weather not found!", view, v -> getCurrentWeather(v), "Retry");
                         }
                     }
 
@@ -173,11 +183,12 @@ public class CurrentWeatherFragment extends BaseFragment {
         textViewDescription.setVisibility(visibility);
     }
 
-    private void validationEditCountry() {
+    private void validationEditCountry(View view) {
         if (editCountry.getText().toString().isEmpty()) {
             editCountry.setError("Insert country");
         } else {
-            Toaster.shortMessage("city: " + country);
+            //Toaster.shortMessage("city: " + country);
+            SnackBar.showSnackBar("Loading weather for... ", view, v1 -> getCurrentWeather(v1),"Retry");
         }
     }
 }

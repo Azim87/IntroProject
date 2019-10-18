@@ -26,7 +26,6 @@ public class OnBoardAdapter extends PagerAdapter {
     TextView textView;
 
     private List<OnBoardModel> models;
-    private Context context;
 
     public OnBoardAdapter(List<OnBoardModel> models) {
         this.models = models;
@@ -45,8 +44,9 @@ public class OnBoardAdapter extends PagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        context = container.getContext();
-        @SuppressLint("InflateParams") View view = LayoutInflater.from(context).inflate(R.layout.item_onboard, null);
+        Context context = container.getContext();
+        @SuppressLint("InflateParams")
+        View view = LayoutInflater.from(context).inflate(R.layout.item_onboard, null);
 
         ButterKnife.bind(this, view);
 
@@ -61,5 +61,4 @@ public class OnBoardAdapter extends PagerAdapter {
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         (container).removeView((View) object);
     }
-
 }

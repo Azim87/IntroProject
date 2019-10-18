@@ -9,12 +9,10 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
-
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -46,15 +44,12 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolManager;
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 import static com.kubatov.androidthree.BuildConfig.MAPBOX_API_KEY;
 import static com.kubatov.androidthree.Constants.DESCRIPTION;
 import static com.kubatov.androidthree.Constants.MAKI_ICON_CAR;
@@ -108,14 +103,11 @@ public class MapBoxFragment extends BaseFragment implements View.OnClickListener
                 Log.d("ololo", "notification:  " + location.getLatitude() + " " + location.getLongitude());
                 Log.d("ololo", "notificationList:  " +lat + " " + longit);
 
-                notificationArrayList.add(
-                        new Notification(longit, lat));
-
+                notificationArrayList.add(new Notification(longit, lat));
                 NotificationDatabase.getInstance(getContext()).notificationDao().insert(notificationArrayList);
-
-
             }
         };
+
         initLocationRequest();
         getPermission();
 
@@ -228,17 +220,16 @@ public class MapBoxFragment extends BaseFragment implements View.OnClickListener
     private void startService() {
         String title = "Hello, World!";
         String description = "Hello, World 2!";
-
         Intent titleIntent = new Intent(getContext(), TrackingService.class);
         titleIntent.putExtra(TITLE, title);
         titleIntent.putExtra(DESCRIPTION, description);
         ContextCompat.startForegroundService(getContext(), titleIntent);
-
     }
 
 
     private void stopService(){
         Intent stopIntent = new Intent(getContext(), TrackingService.class);
+        stopService();
 
     }
     //endregion

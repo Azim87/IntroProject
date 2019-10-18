@@ -3,6 +3,7 @@ package com.kubatov.androidthree.ui.onboard;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,7 +22,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class OnBoardActivity extends AppCompatActivity {
+public class OnBoardActivity extends AppCompatActivity implements View.OnClickListener {
+    OnBoardAdapter adapter;
 
     @BindView(R.id.main_view_pager)
     ViewPager viewPager;
@@ -47,29 +49,39 @@ public class OnBoardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_on_board);
         ButterKnife.bind(this);
-
-        setViewPager();
+        nextButton.setOnClickListener(this);
+        initViewPager();
     }
 
     //region ViewPager
-    private void setViewPager() {
-        OnBoardAdapter adapter = new OnBoardAdapter(getData());
+    private void initViewPager() {
+        adapter = new OnBoardAdapter(getData());
         viewPager.setAdapter(adapter);
         dotsCount = adapter.getCount();
-
-        textView.setOnClickListener(v -> {
-            viewPager.setCurrentItem(3, true);
-        });
-
-        nextButton.setOnClickListener(v -> {
-            if (viewPager.getCurrentItem() == adapter.getCount() - 1) {
-                MainActivity.start(this);
-                finish();
-            } else {
-                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
-            }
-        });
         slideDotes();
+    }
+
+    private void setPages(){
+        if (viewPager.getCurrentItem() == adapter.getCount() - 1) {
+            MainActivity.start(this);
+            finish();
+        } else {
+            viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case  R.id.text_view_skip:
+                viewPager.setCurrentItem(3, true);
+                break;
+
+            case R.id.button_next:
+                setPages();
+                break;
+            default:
+        }
     }
 
     private List<OnBoardModel> getData(){
@@ -133,5 +145,7 @@ public class OnBoardActivity extends AppCompatActivity {
             });
         }
     }
+
+
     //endregion
 }
