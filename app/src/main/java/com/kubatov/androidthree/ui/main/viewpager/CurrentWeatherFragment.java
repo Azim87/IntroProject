@@ -176,11 +176,11 @@ public class CurrentWeatherFragment extends BaseFragment {
     }
 
     private void showViews(int visibility) {
-        textViewCity.setVisibility(visibility);
-        textViewTemp.setVisibility(visibility);
-        textViewHumidity.setVisibility(visibility);
-        texHumidity.setVisibility(visibility);
-        textViewDescription.setVisibility(visibility);
+        textViewCity.setVisibility(View.VISIBLE);
+        textViewTemp.setVisibility(View.VISIBLE);
+        textViewHumidity.setVisibility(View.VISIBLE);
+        texHumidity.setVisibility(View.VISIBLE);
+        textViewDescription.setVisibility(View.VISIBLE);
     }
 
     private void validationEditCountry(View view) {
