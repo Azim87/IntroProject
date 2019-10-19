@@ -43,11 +43,6 @@ public class TrackingService extends Service {
 
             Intent notificationIntent = new Intent(this, MainActivity.class);
             PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-            PendingIntent stopNotification = null;
-            if (Build.VERSION.SDK_INT >= 26) {
-                stopNotification = PendingIntent.getService(this, 1, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-            }
-
 
             Notification notification = new NotificationCompat.Builder(this, CHANNEL_1)
                     .setSmallIcon(R.drawable.ic_my_location)
@@ -57,23 +52,10 @@ public class TrackingService extends Service {
                     .setCategory(NotificationCompat.CATEGORY_NAVIGATION)
                     .setColor(Color.RED)
                     .setContentIntent(contentIntent)
-                    .addAction(R.drawable.ic_stop, "Stop", stopNotification)
                     .build();
             this.startForeground(ID, notification);
-
-        }else {
-            stopForegroundService();
         }
-
         return START_STICKY;
-    }
-
-    private void stopForegroundService(){
-        Intent intent = new Intent();
-        intent.getFlags();
-        stopService(intent);
-        this.stopForeground(true);
-        stopSelf();
     }
 
     public void createNotificationChannel(){
@@ -91,10 +73,5 @@ public class TrackingService extends Service {
                 manager.createNotificationChannel(notificationChannel);
             }
         }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
     }
 }

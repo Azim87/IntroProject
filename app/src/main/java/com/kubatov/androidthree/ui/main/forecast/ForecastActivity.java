@@ -26,6 +26,7 @@ import retrofit2.Response;
 
 import static com.kubatov.androidthree.BuildConfig.WEATHER_API_KEY;
 import static com.kubatov.androidthree.Constants.CITY;
+import static com.kubatov.androidthree.Constants.LANG;
 import static com.kubatov.androidthree.Constants.METRIC;
 
 public class ForecastActivity extends AppCompatActivity {
@@ -57,10 +58,13 @@ public class ForecastActivity extends AppCompatActivity {
         getForeCastData();
     }
 
-
     private void getForeCastData() {
         RetroFitBuilder.getService().getForecast(
-                CITY, "ru", WEATHER_API_KEY, METRIC
+                CITY,
+                LANG,
+                WEATHER_API_KEY,
+                METRIC
+
         ).enqueue(new Callback<Forecast>() {
             @Override
             public void onResponse(@Nullable Call<Forecast> call, @Nullable Response<Forecast> response) {
@@ -77,8 +81,7 @@ public class ForecastActivity extends AppCompatActivity {
     private void setData(Response<Forecast> response) {
         if (response.isSuccessful()) {
             if (response.body() != null) {
-                for (Mylist mylist : response.body().getList())
-                    forecastsList.addAll(response.body().getList());
+                forecastsList.addAll(response.body().getList());
                 foreCastRecycler.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
             } else {

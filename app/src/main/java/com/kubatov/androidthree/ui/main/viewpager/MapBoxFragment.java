@@ -65,6 +65,7 @@ public class MapBoxFragment extends BaseFragment implements View.OnClickListener
     private LocationComponent locationComponent;
     private PermissionsManager permissionsManager;
     private SymbolManager symbolManager;
+
     private FusedLocationProviderClient mLocationProviderClient;
     private LocationRequest mLocationRequest;
     private LocationCallback mLocationCallback;
@@ -98,10 +99,11 @@ public class MapBoxFragment extends BaseFragment implements View.OnClickListener
             public void onLocationResult(LocationResult locationResult) {
                 super.onLocationResult(locationResult);
                 Location location = locationResult.getLastLocation();
+
                 longit = location.getLongitude();
                 lat = location.getLatitude();
+
                 Log.d("ololo", "notification:  " + location.getLatitude() + " " + location.getLongitude());
-                Log.d("ololo", "notificationList:  " +lat + " " + longit);
 
                 notificationArrayList.add(new Notification(longit, lat));
                 NotificationDatabase.getInstance(getContext()).notificationDao().insert(notificationArrayList);
@@ -157,9 +159,10 @@ public class MapBoxFragment extends BaseFragment implements View.OnClickListener
     @Override
     protected void initView(View view) {
 
-        ButterKnife.bind(this, view);
         initMap();
+        ButterKnife.bind(this, view);
         startImageButton.setOnClickListener(this);
+        stopImageButton.setOnClickListener(this);
     }
     //endregion
 
@@ -210,6 +213,7 @@ public class MapBoxFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mLocationProviderClient.removeLocationUpdates(mLocationCallback);
         mapboxView.onDestroy();
     }
 
@@ -228,10 +232,31 @@ public class MapBoxFragment extends BaseFragment implements View.OnClickListener
 
 
     private void stopService(){
-        Intent stopIntent = new Intent(getContext(), TrackingService.class);
-        stopService();
+        Intent titleIntent = new Intent(getContext(), TrackingService.class);
+        getContext().stopService(titleIntent);
+        Log.d("ololo", "stopService: " + titleIntent.toString());
 
     }
+
+    //region On Click
+    @RequiresApi(api = Build.VERSION_CODES.P)
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.start_image_button:
+                startService();
+                currentLocationEnabled();
+                break;
+
+            case R.id.stop_image_button:
+                stopService();
+                break;
+
+            default:
+        }
+
+    }
+    //endregion
     //endregion
 
     //region Init Map
@@ -320,23 +345,5 @@ public class MapBoxFragment extends BaseFragment implements View.OnClickListener
     }
     //endregion
 
-    //region On Click
-    @RequiresApi(api = Build.VERSION_CODES.P)
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.start_image_button:
-                startService();
-                currentLocationEnabled();
-                return;
 
-            case R.id.stop_image_button:
-                stopService();
-                return;
-
-            default:
-        }
-
-    }
-    //endregion
 }

@@ -33,6 +33,5 @@
         </activity>
         <activity android:name=".ui.main.MainActivity"/>
         <service android:name=".ui.service.TrackingService"/>
-        <receiver android:name=".ui.receiver.NotificationReceiver"/>
     </application>
 </manifest>

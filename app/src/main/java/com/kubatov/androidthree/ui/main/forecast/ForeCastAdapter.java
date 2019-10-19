@@ -1,7 +1,6 @@
 package com.kubatov.androidthree.ui.main.forecast;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +25,6 @@ import static com.kubatov.androidthree.Constants.ICON_URL;
 
 public class ForeCastAdapter extends RecyclerView.Adapter<ForeCastAdapter.ForeCastViewHolder> {
     private List<Mylist> forecastList;
-    private Context mContext;
 
     ForeCastAdapter(List<Mylist> forecastList) {
         this.forecastList = forecastList;
@@ -50,12 +48,13 @@ public class ForeCastAdapter extends RecyclerView.Adapter<ForeCastAdapter.ForeCa
                 .apply(new RequestOptions().override(100, 100))
                 .into(holder.foreCastIV);
 
-        holder.tempTextView.setText("date: " + DateUtil.convertUnixToDate(forecastList.get(position).dt) + "\n" +
+        holder.tempTextView.setText(
+                "date: " + DateUtil.convertUnixToDate(forecastList.get(position).dt) + "\n" +
                 "min temp: " + forecastList.get(position).main.getTempMin().intValue() + "°C" + "\n" +
                 "max temp: " + forecastList.get(position).main.getTempMax().intValue() + "°C" + "\n" +
                 "humidity: " + forecastList.get(position).main.getHumidity() + "%" + "\n" +
                 "description: " + forecastList.get(position).weather.get(0).getMain() + "\n" +
-                DateUtil.convertUnixToHour("time:  " + DateUtil.convertUnixToHour(forecastList.get(position).getDt_txt())));
+                "time:  " + DateUtil.convertUnixToHour(forecastList.get(position).dt_txt));
     }
 
     @Override

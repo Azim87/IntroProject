@@ -74,10 +74,11 @@ dependencies {
 
     /* Room NotificationDatabase*/
     def room_version = "2.2.0"
+    def lifecycle_version = "2.1.0"
+
     implementation "android.arch.persistence.room:runtime:$room_version"
     annotationProcessor "android.arch.persistence.room:compiler:$room_version"
 
-    def lifecycle_version = "2.1.0"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
 

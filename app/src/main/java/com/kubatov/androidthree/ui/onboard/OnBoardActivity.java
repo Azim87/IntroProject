@@ -81,6 +81,7 @@ public class OnBoardActivity extends AppCompatActivity implements View.OnClickLi
                 setPages();
                 break;
             default:
+                break;
         }
     }
 
@@ -145,7 +146,5 @@ public class OnBoardActivity extends AppCompatActivity implements View.OnClickLi
             });
         }
     }
-
-
     //endregion
 }

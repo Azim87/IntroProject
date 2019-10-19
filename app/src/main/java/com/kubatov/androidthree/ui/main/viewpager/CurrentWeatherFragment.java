@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -42,7 +41,7 @@ import static com.kubatov.androidthree.Constants.ICON_URL;
 import static com.kubatov.androidthree.Constants.LANG;
 import static com.kubatov.androidthree.Constants.METRIC;
 
-public class CurrentWeatherFragment extends BaseFragment {
+public class CurrentWeatherFragment extends BaseFragment implements View.OnClickListener {
 
     //region InitViews
     @BindView(R.id.text_view_city)
@@ -70,7 +69,6 @@ public class CurrentWeatherFragment extends BaseFragment {
     private int position = 0;
     private String country;
 
-    private RelativeLayout relativeLayout;
     //endregion
 
     public static void start(Context context) {
@@ -87,15 +85,22 @@ public class CurrentWeatherFragment extends BaseFragment {
         ButterKnife.bind(this, view);
         editCountryName();
         bgImageView.animate().scaleX(1.3f).scaleY(1.3f).setDuration(5000).start();
-
-        textViewForecast.setOnClickListener(v1 -> {
-            ForecastActivity.start(this.getActivity());
-        });
-
         button.animate().scaleX(1.2f).scaleY(1.2f).setDuration(5000).start();
-        button.setOnClickListener(v -> {
-            getCurrentWeather(v);
-        });
+        button.setOnClickListener(this);
+        textViewForecast.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.refresh_button:
+                getCurrentWeather(v);
+                break;
+
+            case R.id.forecast_weather:
+                ForecastActivity.start(this.getActivity());
+                break;
+        }
     }
 
     @Override
@@ -112,7 +117,6 @@ public class CurrentWeatherFragment extends BaseFragment {
                 WEATHER_API_KEY,
                 METRIC
         )
-
                 .enqueue(new Callback<CurrentWeather>() {
                     @SuppressLint("SetTextI18n")
                     @Override
@@ -188,7 +192,7 @@ public class CurrentWeatherFragment extends BaseFragment {
             editCountry.setError("Insert country");
         } else {
             //Toaster.shortMessage("city: " + country);
-            SnackBar.showSnackBar("Loading weather for... ", view, v1 -> getCurrentWeather(v1),"Retry");
+            SnackBar.showSnackBar("Loading weather for... ", view, v1 -> getCurrentWeather(v1), "Refresh");
         }
     }
 }
