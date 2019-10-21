@@ -10,6 +10,7 @@ import androidx.core.app.NotificationManagerCompat;
 import com.kubatov.androidthree.ui.main.MainActivity;
 import com.kubatov.androidthree.util.NotificationHelper;
 
+import static com.kubatov.androidthree.Constants.CHANNEL_1;
 import static com.kubatov.androidthree.R.drawable.ic_my_location;
 
 public class TrackingService extends Service {
@@ -33,7 +34,8 @@ public class TrackingService extends Service {
                 notificationIntent,
                 ic_my_location,
                 "this is foreground service",
-                "Hello!"));
+                "Hello!",
+                CHANNEL_1));
 
         return START_STICKY;
     }

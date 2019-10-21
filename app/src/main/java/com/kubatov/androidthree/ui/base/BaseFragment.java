@@ -10,8 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import butterknife.ButterKnife;
-
 public abstract class BaseFragment extends Fragment {
 
     @LayoutRes
@@ -29,6 +27,5 @@ public abstract class BaseFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initView(view);
-        ButterKnife.bind(this, view);
     }
 }
