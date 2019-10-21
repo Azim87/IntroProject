@@ -4,7 +4,6 @@ import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Build;
 
 import com.kubatov.androidthree.data.preference.SharedPreferenceHelper;
@@ -25,22 +24,15 @@ public class App extends Application {
         createNotificationChannel();
     }
 
-    public void createNotificationChannel(){
+    private void createNotificationChannel(){
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            NotificationChannel notificationChannel = new NotificationChannel(
-
-                    CHANNEL_1,
-                    MAPBOX,
+            NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_1, MAPBOX,
                     NotificationManager.IMPORTANCE_HIGH );
-
-            notificationChannel.setLightColor(Color.RED);
-
             NotificationManager manager = getSystemService(NotificationManager.class);
             if (manager != null) {
                 manager.createNotificationChannel(notificationChannel);
             }
-
         }
     }
 

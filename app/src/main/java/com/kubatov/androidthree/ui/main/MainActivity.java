@@ -11,7 +11,7 @@ import com.kubatov.androidthree.App;
 import com.kubatov.androidthree.R;
 import com.kubatov.androidthree.ui.main.viewpager.CurrentWeatherAdapter;
 import com.kubatov.androidthree.ui.main.viewpager.CurrentWeatherFragment;
-import com.kubatov.androidthree.ui.main.viewpager.MapBoxFragment;
+import com.kubatov.androidthree.ui.main.viewpager.mapbox.MapBoxFragment;
 import com.kubatov.androidthree.ui.onboard.OnBoardActivity;
 
 import java.util.ArrayList;
