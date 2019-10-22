@@ -50,6 +50,7 @@ public class OnBoardActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_on_board);
         ButterKnife.bind(this);
         nextButton.setOnClickListener(this);
+        textView.setOnClickListener(this);
         initViewPager();
     }
 

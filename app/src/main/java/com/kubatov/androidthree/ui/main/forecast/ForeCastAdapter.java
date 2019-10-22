@@ -49,12 +49,11 @@ public class ForeCastAdapter extends RecyclerView.Adapter<ForeCastAdapter.ForeCa
                 .into(holder.foreCastIV);
 
         holder.tempTextView.setText(
-                "date: " + DateUtil.convertUnixToDate(forecastList.get(position).dt) + "\n" +
-                "min temp: " + forecastList.get(position).main.getTempMin().intValue() + "°C" + "\n" +
-                "max temp: " + forecastList.get(position).main.getTempMax().intValue() + "°C" + "\n" +
-                "humidity: " + forecastList.get(position).main.getHumidity() + "%" + "\n" +
-                "description: " + forecastList.get(position).weather.get(0).getMain() + "\n" +
-                "time:  " + DateUtil.convertUnixToHour(forecastList.get(position).dt_txt));
+                DateUtil.convertUnixToDate(forecastList.get(position).dt) + "      " +
+                        forecastList.get(position).main.getTempMin().intValue() + "°C" + " / " +
+                        forecastList.get(position).main.getTempMax().intValue() + "°C" + "\n" +
+                        forecastList.get(position).weather.get(0).getDescription() + "  " +
+                        DateUtil.convertUnixToHour(forecastList.get(position).dt_txt));
     }
 
     @Override

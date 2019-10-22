@@ -138,7 +138,7 @@ public class CurrentWeatherFragment extends BaseFragment implements View.OnClick
 
                     @Override
                     public void onFailure(@Nullable Call<CurrentWeather> call, Throwable t) {
-                        Toaster.longMessage("Error" + t.getMessage());
+                        SnackBar.showSnackBar("No internet connection!", view, v -> getCurrentWeather(v), "Retry");
                     }
                 });
     }

@@ -9,20 +9,20 @@ public class DateUtil {
 
     public static String convertUnixToDate(long dt) {
         Date date = new Date(dt * 1000L);
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yy", Locale.getDefault());
         return sdf.format(date);
     }
 
     public static String convertUnixToHour(String s) {
-        SimpleDateFormat inputFormmat = new SimpleDateFormat("yyyy-MM-dd HH:mm:SS", Locale.getDefault());
-        SimpleDateFormat outputFormmat = new SimpleDateFormat("HH:mm:SS", Locale.getDefault());
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:SS", Locale.getDefault());
+        SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
         Date date = null;
         try {
-            date = inputFormmat.parse(s);
+            date = inputFormat.parse(s);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return outputFormmat.format(date);
+        return outputFormat.format(date);
     }
 }

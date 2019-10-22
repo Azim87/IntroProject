@@ -1,11 +1,19 @@
 package com.kubatov.androidthree.ui.main.viewpager.mapbox;
 
+import android.Manifest;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 import com.kubatov.androidthree.R;
 import com.kubatov.androidthree.ui.base.BaseFragment;
 import com.mapbox.android.core.permissions.PermissionsManager;
@@ -37,13 +45,32 @@ abstract class BaseMapBoxFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         Mapbox.getInstance(getContext(), MAPBOX_API_KEY);
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        askForPermission();
         initMap();
+    }
+
+    private void askForPermission(){
+        Dexter.withActivity(getActivity()).withPermission(Manifest.permission.ACCESS_FINE_LOCATION).withListener(new PermissionListener() {
+            @Override
+            public void onPermissionGranted(PermissionGrantedResponse response) {
+                Log.d("ololo", "onPermissionGranted: ");
+            }
+
+            @Override
+            public void onPermissionDenied(PermissionDeniedResponse response) {
+                Log.d("ololo", "onPermissionDenied: ");
+            }
+
+            @Override
+            public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                Log.d("ololo", "onPermissionRationaleShouldBeShown: ");
+            }
+        }).check();
     }
 
     private void initMap() {
