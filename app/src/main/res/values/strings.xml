@@ -10,4 +10,7 @@
     <string name="city">Weather in</string>
     <string name="refreshButton">Search</string>
     <string name="forecast_weather">16 days forecast</string>
+    <string name="bottom_sheet_location">This is location bottom sheet.</string>
+    <string name="bottom_sheet_duration">duration</string>
+    <string name="bottom_sheet_distance">distance</string>
 </resources>

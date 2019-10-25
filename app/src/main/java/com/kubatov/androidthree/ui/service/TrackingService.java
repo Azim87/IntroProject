@@ -9,20 +9,20 @@ import android.os.Build;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationManagerCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.kubatov.androidthree.data.database.NotificationDatabase;
 import com.kubatov.androidthree.data.model.notification.Notification;
 import com.kubatov.androidthree.ui.main.MainActivity;
 import com.kubatov.androidthree.util.NotificationHelper;
+import com.kubatov.androidthree.util.Toaster;
 
 import java.util.ArrayList;
 
@@ -30,14 +30,13 @@ import static com.kubatov.androidthree.Constants.CHANNEL_1;
 import static com.kubatov.androidthree.R.drawable.ic_my_location;
 
 public class TrackingService extends Service {
+    public static final int ID = 1;
+
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private LocationCallback mLocationCallback;
     private LocationRequest mLocationRequest;
     private Location mLocation;
     private ArrayList<Notification> mNotificationList;
-
-    NotificationManagerCompat managerCompat;
-    public static final int ID = 1;
 
     @Override
     public void onCreate() {
@@ -65,7 +64,6 @@ public class TrackingService extends Service {
                     "Hello!",
                     CHANNEL_1));
         }
-
         return START_STICKY;
     }
 
@@ -77,22 +75,32 @@ public class TrackingService extends Service {
     }
 
     private void createLocationCallback(){
-        mNotificationList = new ArrayList<>();
-
         mLocationCallback = new LocationCallback(){
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 super.onLocationResult(locationResult);
                 mLocation = locationResult.getLastLocation();
-                Log.d("ololo", "onLocationResult: " + mLocation.getLatitude() + " " + mLocation.getLongitude());
-                mNotificationList.add(new Notification(
-                        mLocation.getLatitude(),
-                        mLocation.getLongitude()
-
-                ));
+                saveLocationToData();
                 locationUpdated();
+                Log.d("ololo", "onLocationResult: " + mLocation.getLatitude() + " " + mLocation.getLongitude());
             }
         };
+    }
+
+    private void saveLocationToData(){
+        mNotificationList = new ArrayList<>();
+        mNotificationList.add(new Notification(
+                mLocation.getLatitude(),
+                mLocation.getLongitude()));
+
+        NotificationDatabase
+                .getInstance(this)
+                .notificationDao()
+                .insert(mNotificationList);
+
+        Log.d("ololo", "saveLocationToData: " +
+                mNotificationList.get(0).getLongit() + " " +
+                mNotificationList.get(0).getLang());
     }
 
     private void locationUpdated(){
@@ -103,20 +111,22 @@ public class TrackingService extends Service {
         mLocationRequest.setSmallestDisplacement(4.0f);
     }
 
-    private void requestPermission(){
+    private void requestPermission() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this, "Not Enough Permission", Toast.LENGTH_SHORT).show();
+            Toaster.shortMessage("You have already granted this permission!");
             locationUpdated();
-            return;
         }
     }
 
-    private void requestUpdates(){
-     mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.getMainLooper());
+    private void requestUpdates() {
+     mFusedLocationProviderClient.requestLocationUpdates(
+             mLocationRequest,
+             mLocationCallback,
+             Looper.getMainLooper());
     }
 
-    private void removeUpdates(){
+    private void removeUpdates() {
         mFusedLocationProviderClient.removeLocationUpdates(mLocationCallback);
     }
 
